@@ -1,0 +1,25 @@
+.root{
+    -fx-background-color: #FFFCF8;
+}
+
+#titleHeader{
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #111000;
+
+}
+
+#titleHLine{
+    -fx-color: #111000;
+    -fx-stroke-width: 5px;
+}
+
+#addTaskBtn{
+    -fx-background-color: #237ed9;
+    -fx-text-fill: #FFFCF8;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+    -fx-padding: 6px 10px 6px 10px;
+    -fx-background-radius: 4px;
+}
