@@ -71,4 +71,5 @@
 .categoryBtn:hover {
     -fx-text-fill: white;
     -fx-background-color: -Btn-color;
+    -fx-font-weight: 500;
 }
