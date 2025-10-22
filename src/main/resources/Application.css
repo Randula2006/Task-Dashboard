@@ -1,25 +1,74 @@
 .root{
-    -fx-background-color: #FFFCF8;
-}
-
-#titleHeader{
-    -fx-font-family: "Helvetica";
-    -fx-font-size: 20px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #111000;
+    -Accent-color: #f0f0f0;
+    -Btn-color: #007bff;
+    -hover-Btn-color: #00bbf3;
+    -fx-background-color: -Accent-color;
 
 }
 
-#titleHLine{
-    -fx-color: #111000;
-    -fx-stroke-width: 5px;
+.top-bar{
+    -fx-background-color: -Accent-color;
+    -fx-border-color: #e0e0e0;
+    -fx-padding: 15px;
+    -fx-spacing: 10;
+    -fx-alignment: center;
 }
 
-#addTaskBtn{
-    -fx-background-color: #237ed9;
-    -fx-text-fill: #FFFCF8;
-    -fx-font-size: 14px;
-    -fx-font-weight: 400;
-    -fx-padding: 6px 10px 6px 10px;
-    -fx-background-radius: 4px;
+.title-header{
+    -fx-font-size: 26;
+    -fx-font-weight: bold;
+    -fx-padding: 0px 0px 0px 10px;
+}
+
+.addTaskBtn-primary{
+    -fx-background-color: -Btn-color;
+    -fx-text-fill: white;
+    -fx-padding: 10 20 10 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+.addTaskBtn-primary:hover {
+    -fx-background-color: -hover-Btn-color;
+}
+
+.sidebar {
+    -fx-alignment: top-left;
+    -fx-min-width: 220px;
+    -fx-background-color: -Accent-color;
+    -fx-border-color: #e0e0e0;
+    -fx-padding: 30;
+    -fx-spacing: 15;
+}
+
+.sidebar-title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.content-area {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+}
+
+.categoryBtnHolder{
+    -fx-alignment: center-left;
+    -fx-padding: 10 0 10 0;
+}
+
+.categoryBtn{
+    -fx-alignment: center-left;
+    -fx-padding: 8 15 8 30;
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-font-weight: 500;
+    -fx-font-size: 16;
+    -fx-cursor: hand;
+    -fx-border-radius: 10px;
+}
+
+.categoryBtn:hover {
+    -fx-text-fill: white;
+    -fx-background-color: -Btn-color;
 }

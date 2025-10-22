@@ -18,7 +18,7 @@ public class Dashboard extends Application {
        try {
            //get root if the file is not null
            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Main.fxml")));
-           Scene scene = new Scene(root);
+           Scene scene = new Scene(root , 1000, 600);
 
            //If the css file is used in more than one scene
            String cssFile = Objects.requireNonNull(this.getClass().getResource("/Application.css")).toExternalForm();
