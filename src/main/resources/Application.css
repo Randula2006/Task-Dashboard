@@ -2,6 +2,7 @@
     -Accent-color: #f0f0f0;
     -Btn-color: #007bff;
     -hover-Btn-color: #00bbf3;
+    -contentArea-color: #f8f9fc;
     -fx-background-color: -Accent-color;
 
 }
@@ -72,4 +73,136 @@
     -fx-text-fill: white;
     -fx-background-color: -Btn-color;
     -fx-font-weight: 500;
+}
+
+#contentArea{
+    --content-margin: 0;
+    -fx-padding: 0;
+}
+/* ──────────────── ALL TASKS DASHBOARD ──────────────── */
+
+.allTasks-root {
+    -fx-background-color: -contentArea-color;
+}
+
+.allTasks-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 10 0 10 20;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ScrollPane customization */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Container inside ScrollPane */
+.tasks-container {
+    -fx-spacing: 20;
+    -fx-padding: 0 0 20 20;
+    -fx-alignment: top-left;
+}
+
+/* ──────────────── TASK CARD ──────────────── */
+.task-card {
+    -fx-background-color: white;
+    /*-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);*/
+    -fx-background-radius: 12;
+    -fx-padding: 15 0 15 40;
+    -fx-spacing: 10;
+    -fx-border-color: #1e5ae0;
+    -fx-border-sroke-width: 2;
+    -fx-border-radius: 12;
+    /*-fx-transition: 0.3s;*/
+}
+
+.task-card:hover {
+    /*-fx-effect: dropshadow(gaussian, rgba(0, 123, 255, 0.3), 15, 0.3, 0, 4);*/
+    /*-fx-translate-y: -2;*/
+}
+
+/* Task labels */
+.task-title {
+    -fx-font-size: 18;
+    -fx-padding: 0 0 0 15;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.task-status {
+    -fx-font-size: 16;
+    -fx-padding: 0 0 0 15;
+    -fx-text-fill: #6c757d;
+}
+
+.task-priority {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: #007bff;
+    -fx-background-color: rgba(0, 123, 255, 0.1);
+    -fx-padding: 8 12 8 12;
+    -fx-alignment: center;
+    -fx-background-radius: 10;
+    -fx-translate-x: 45;
+    -fx-translate-y: -4;
+}
+.task-dueDate{
+    -fx-font-size: 15;
+    -fx-text-fill: #14a4e0;
+    -fx-font-weight: bold;
+    -fx-padding: 6 10 6 15;
+}
+
+/* Buttons */
+.task-btn {
+    -fx-background-radius: 6;
+    -fx-font-weight: 600;
+    -fx-padding: 6 14 ;
+    -fx-cursor: hand;
+    -fx-font-size: 13;
+    -fx-border-radius: 6;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+.edit-btn {
+    -fx-background-color: #28a745;
+    -fx-translate-x: 19;
+}
+
+.delete-btn {
+    -fx-background-color: #dc3545;
+    -fx-translate-x: 29;
+}
+
+.edit-btn:hover {
+    -fx-background-color: #34d058;
+}
+
+.delete-btn:hover {
+    -fx-background-color: #ff4d5a;
+}
+
+/* ──────────────── TRANSITIONS ──────────────── */
+.task-card:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Subtle scrollbar styling */
+.scroll-bar:vertical .thumb {
+    -fx-background-color: derive(#007bff, 20%);
+    -fx-background-radius: 10;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #e9ecef;
+    -fx-background-radius: 10;
 }
