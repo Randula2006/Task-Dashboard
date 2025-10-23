@@ -79,6 +79,7 @@
     --content-margin: 0;
     -fx-padding: 0;
 }
+
 /* ──────────────── ALL TASKS DASHBOARD ──────────────── */
 
 .allTasks-root {
@@ -173,7 +174,7 @@
 }
 
 .edit-btn {
-    -fx-background-color: #28a745;
+    -fx-background-color: #11c235;
     -fx-translate-x: 19;
 }
 
@@ -183,7 +184,7 @@
 }
 
 .edit-btn:hover {
-    -fx-background-color: #34d058;
+    -fx-background-color: #29ec48;
 }
 
 .delete-btn:hover {
@@ -205,4 +206,23 @@
 .scroll-bar:vertical .track {
     -fx-background-color: #e9ecef;
     -fx-background-radius: 10;
+}
+
+/*---------------------------------All Task Dashboard CSS complete.--------------------------------*/
+
+/*-----------------------------------Add Task Window CSS-----------------------------------*/
+
+.addTask-title{
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+    -fx-text-fill: #2c3e50;
+    -fx-translate-y: -5;
+}
+
+.addTask-priority{
+    -fx-font-size: 16;
+    -fx-font-weight: 700;
+    -fx-translate-y: -5;
+    -fx-text-fill: #2c3e50;
 }
