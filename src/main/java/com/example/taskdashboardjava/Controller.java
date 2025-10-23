@@ -1,5 +1,6 @@
 package com.example.taskdashboardjava;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,12 +25,14 @@ public class Controller {
 
     @FXML
     public void initialize() throws IOException {
-//        loadUI("AllTasks");
+        loadUI("AllTasks");
+        System.out.println("Initialized with All Tasks view.");
     }
 
     @FXML
     private void showAllTasks() throws IOException {
-//        loadUI("AllTasks");
+        loadUI("AllTasks");
+        System.out.println("All Tasks button clicked!");
     }
 
     @FXML
@@ -52,6 +56,7 @@ public class Controller {
             String cssFile = Objects.requireNonNull(this.getClass().getResource("/Application.css")).toExternalForm();
             popupScene.getStylesheets().add(cssFile);
             popupStage.setScene(popupScene);
+            popupStage.resizableProperty().setValue(Boolean.FALSE);
 
 //            waiting until the popup window in closed
             popupStage.showAndWait();
@@ -65,22 +70,36 @@ public class Controller {
 
     @FXML
     private void showWorkTasks() throws IOException {
-//        loadUI("WorkTasks");
+        loadUI("WorkTasks");
+        System.out.println("Work Tasks button clicked!");
     }
 
     @FXML
     private void showPersonalTasks() throws IOException {
-//        loadUI("PersonalTasks");
+        loadUI("PersonalTasks");
+        System.out.println("Personal Tasks button clicked!");
     }
 
     @FXML
     private void showOtherTasks() throws IOException {
-//        loadUI("OthersTasks");
+        loadUI("OthersTasks");
+        System.out.println("Other Tasks button clicked!");
     }
 
-    private void loadUI(String fxml) throws IOException {
-        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml + ".fxml")));
-        contentArea.getChildren().setAll(pane);
-    }
+    private void loadUI(String fxmlFileName) throws IOException {
+        AnchorPane newPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlFileName + ".fxml")));
+        contentArea.getChildren().setAll(newPane);
 
+        // Make it fit to the parent area
+        AnchorPane.setTopAnchor(newPane, 0.0);
+        AnchorPane.setBottomAnchor(newPane, 0.0);
+        AnchorPane.setLeftAnchor(newPane, 0.0);
+        AnchorPane.setRightAnchor(newPane, 0.0);
+
+        // Optional: Add a fade animation for smooth transition
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(200), newPane);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.play();
+    }
 }
