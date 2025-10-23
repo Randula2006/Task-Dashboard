@@ -226,3 +226,34 @@
     -fx-translate-y: -5;
     -fx-text-fill: #2c3e50;
 }
+
+.addTask-AddBtn{
+    -fx-background-color: -Btn-color;
+    -fx-text-fill: white;
+    -fx-padding: 10 20 10 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 9;
+    -fx-cursor: hand;
+    -fx-translate-x: -29;
+    -fx-translate-y: -3;
+}
+
+.addTask-AddBtn:hover {
+    -fx-background-color: -hover-Btn-color;
+}
+
+.addTask-CancelBtn{
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-padding: 10 20 10 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+    -fx-translate-x: -14;
+    -fx-translate-y: -3;
+
+}
+
+.addTask-CancelBtn:hover {
+    -fx-background-color: #5a6268;
+}
