@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskdashboardjava.AddTaskPopupWindowsController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskdashboardjava.controller.AddTaskPopupWindowsController">
    <children>
       <Label layoutX="36.0" layoutY="34.0" styleClass="addTask-title" text="Add New Task" />
       <TextField fx:id="addTaskTitle" layoutX="35.0" layoutY="80.0" prefHeight="38.0" prefWidth="530.0" promptText="Task Title" />
@@ -16,7 +16,7 @@
       <DatePicker fx:id="addTaskDate" layoutX="35.0" layoutY="237.0" prefHeight="26.0" prefWidth="173.0" promptText="Due Date" />
       <Label layoutX="38.0" layoutY="284.0" styleClass="addTask-priority" text="Priority" />
       <Button fx:id="createAddTask" layoutX="441.0" layoutY="352.0" mnemonicParsing="false" onAction="#submitAddTask" styleClass="addTask-AddBtn" text="Add" />
-      <Button layoutX="503.0" layoutY="352.0" mnemonicParsing="false" styleClass="addTask-CancelBtn" text="Cancel" />
+      <Button fx:id="cancelAddTask" layoutX="503.0" layoutY="352.0" mnemonicParsing="false" onAction="#cancelAddTask" styleClass="addTask-CancelBtn" text="Cancel" />
       <ComboBox fx:id="addTaskPriority" layoutX="37.0" layoutY="317.0" prefHeight="26.0" prefWidth="290.0" promptText="Select Priority" />
    </children>
 </AnchorPane>

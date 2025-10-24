@@ -17,18 +17,21 @@ public class Dashboard extends Application {
     public void start(Stage stage) throws IOException {
        try {
            //get root if the file is not null
-           Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Main.fxml")));
+           Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/Main.fxml")));
            Scene scene = new Scene(root , 1000, 600 );
 
            //If the css file is used in more than one scene
-           String cssFile = Objects.requireNonNull(this.getClass().getResource("/Application.css")).toExternalForm();
+           String cssFile = Objects.requireNonNull(this.getClass().getResource("/com/example/taskdashboardjava/CSS/Application.css")).toExternalForm();
            scene.getStylesheets().add(cssFile);
 
            //if it is only having one css location
            //scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Application.css")).toExternalForm());
 
            //setting the Image Icon for the window
-           Image icon = new Image("Icon.png");
+           Image icon = new Image(Objects.requireNonNull(
+                           getClass().getResource("/com/example/taskdashboardjava/Images/Icon.png"))
+                   .toExternalForm()
+           );
            stage.getIcons().add(icon);
            stage.setTitle("Task Dashboard");
            stage.setMinWidth(800);

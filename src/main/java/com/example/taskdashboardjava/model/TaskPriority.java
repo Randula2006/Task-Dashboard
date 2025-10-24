@@ -1,5 +1,5 @@
 // TaskPriority.java
-package com.example.taskdashboardjava; // Make sure this matches your package
+package com.example.taskdashboardjava.model; // Make sure this matches your package
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

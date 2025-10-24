@@ -13,4 +13,8 @@ module com.example.taskdashboardjava {
 
     opens com.example.taskdashboardjava to javafx.fxml;
     exports com.example.taskdashboardjava;
+    exports com.example.taskdashboardjava.controller;
+    opens com.example.taskdashboardjava.controller to javafx.fxml;
+    exports com.example.taskdashboardjava.model;
+    opens com.example.taskdashboardjava.model to javafx.fxml;
 }

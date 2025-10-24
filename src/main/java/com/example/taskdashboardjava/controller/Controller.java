@@ -1,4 +1,4 @@
-package com.example.taskdashboardjava;
+package com.example.taskdashboardjava.controller;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,7 +38,7 @@ public class Controller {
     private void handleAddTask() throws IOException {
         try {
             System.out.println("Add Task button clicked!");
-            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("AddTaskPopupWindows.fxml")));
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/AddTaskPopupWindows.fxml")));
             Parent popupRoot = loader.load();
 
 //            create a new stage for the popup
@@ -53,7 +52,7 @@ public class Controller {
             popupStage.initOwner(ownerStage);
 
             Scene popupScene = new Scene(popupRoot);
-            String cssFile = Objects.requireNonNull(this.getClass().getResource("/Application.css")).toExternalForm();
+            String cssFile = Objects.requireNonNull(this.getClass().getResource("/com/example/taskdashboardjava/CSS/Application.css")).toExternalForm();
             popupScene.getStylesheets().add(cssFile);
             popupStage.setScene(popupScene);
             popupStage.resizableProperty().setValue(Boolean.FALSE);
@@ -87,7 +86,7 @@ public class Controller {
     }
 
     private void loadUI(String fxmlFileName) throws IOException {
-        AnchorPane newPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlFileName + ".fxml")));
+        AnchorPane newPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/" + fxmlFileName + ".fxml")));
         contentArea.getChildren().setAll(newPane);
 
         // Make it fit to the parent area

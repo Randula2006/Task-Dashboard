@@ -1,10 +1,10 @@
-package com.example.taskdashboardjava;
+package com.example.taskdashboardjava.controller;
 
+import com.example.taskdashboardjava.model.TaskPriority;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.Node; // Required for the graphic
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -23,6 +23,8 @@ public class AddTaskPopupWindowsController implements Initializable {
     private ComboBox<TaskPriority> addTaskPriority;
     @FXML
     private Button createAddTask;
+    @FXML
+    private Button cancelAddTask;
 
     public void submitAddTask(ActionEvent event) {
         String title = addTaskTitle.getText();
@@ -37,6 +39,11 @@ public class AddTaskPopupWindowsController implements Initializable {
         System.out.println("Priority: " + (priority != null ? priority.getName() : "None"));
 
         Stage stage = (Stage) createAddTask.getScene().getWindow();
+        stage.close();
+    }
+
+    public void cancelAddTask(ActionEvent event) {
+        Stage stage = (Stage) cancelAddTask.getScene().getWindow();
         stage.close();
     }
 
