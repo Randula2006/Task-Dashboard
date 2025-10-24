@@ -1,6 +1,7 @@
 package com.example.taskdashboardjava;
 
 //javaFx imports
+import com.example.taskdashboardjava.database.SetupDatabase;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,6 +39,9 @@ public class Dashboard extends Application {
            stage.setMinHeight(500);
            stage.setScene(scene);
            stage.show();
+
+//         database connection
+           SetupDatabase.createTables();
        }
        catch (Exception e){
            e.printStackTrace();
