@@ -1,17 +1,18 @@
 
-# Fuel Station Management System
+# Task Management System
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
-![GitHub last commit](https://img.shields.io/github/last-commit/Randula2006/fuel-station-management-system?style=for-the-badge)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Randula2006/fuel-station-management-system?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/Randula2006/Task-Dashboard?style=for-the-badge)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Randula2006/Task-Dashboard?style=for-the-badge)
 
 ## 📋 Overview
 
-A Java/Maven project scaffold for a Fuel Station Management System. This document intentionally avoids listing unimplemented or unverified features.
+A Java/Maven implementation of a Task Management System — a lightweight desktop application for creating, viewing, and organizing tasks.
 
-A complete feature list will be added after the codebase is reviewed.
-## 🚀 Getting Started
+This README gives a concise orientation for developers who want to build, run, or contribute to the project.
+
+## 🚀 Quick start
 
 ### Prerequisites
 
@@ -19,59 +20,84 @@ A complete feature list will be added after the codebase is reviewed.
 - Apache Maven 3.6 or higher
 - Git
 
-### Installation
+### Build and run
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Randula2006/fuel-station-management-system.git
-   cd fuel-station-management-system
-   ```
-2. **Build the project**
-   ```bash
-   mvn clean install
-   ```
+1. Clone the repository (replace the URL with your fork if applicable):
 
-## 🛠️ Technologies Used
+```bash
+git clone https://github.com/Randula2006/Task-Dashboard.git
+cd "Task-DashBoard-Java"
+```
 
-- Java
+2. Build with Maven:
+
+```bash
+mvn clean package
+```
+
+3. Run the application (the artifact is a JavaFX desktop app; adapt the command to your environment):
+
+```bash
+mvn exec:java -Dexec.mainClass="com.example.taskdashboardjava.Main"
+```
+
+If you prefer to run the packaged JAR (after packaging):
+
+```bash
+java -jar target/your-artifact-name.jar
+```
+
+## ✅ Features (high level)
+
+- Create, edit and delete tasks
+- Categorize tasks (Personal, Work, Others)
+- Task priority levels
+- Persistent storage using an embedded database (project-local)
+- Simple, responsive JavaFX UI
+
+## 🛠️ Technologies
+
+- Java 11+
 - Maven
-## 📁 Project Structure
+- JavaFX for UI
+
+## 📁 Project layout
 
 ```
-fuel-station-management-system/
+task-dashboard-java/
 ├── src/
 │   ├── main/
-│   │   ├── java/          # Source code
-│   │   └── resources/     # Configuration files
+│   │   ├── java/          # Application source code (com.example.taskdashboardjava)
+│   │   └── resources/     # FXML, CSS and images
 │   └── test/              # Unit tests
 ├── pom.xml                # Maven configuration
 └── README.md              # Project documentation
 ```
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions, bug reports and feature requests are welcome. To contribute:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a topic branch (e.g. `feature/add-search`)
+3. Add tests for new behavior when applicable
+4. Commit and push your changes
+5. Open a pull request describing the change
 
-## 📝 License
+Please follow common best practices (small commits, clear messages, and one logical change per PR).
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## License
 
-## 👤 Author
+This project is licensed under the MIT License — see the `LICENSE` file for details.
 
-**Randula2006**
+## Author
 
-- GitHub: [@Randula2006](https://github.com/Randula2006)
+**Randula2006** — Maintainer and original author
 
-## 📞 Support
+## Support
 
-For support, please open an issue in the GitHub repository or contact the maintainer.
+If you need help or want to report issues, open an issue in the repository and provide as much detail as possible (steps to reproduce, screenshots, logs).
 
 ---
 
-⭐ Star this repository if you find it helpful!
+Thank you for checking out this project — star the repo if you find it useful!
