@@ -12,7 +12,7 @@
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label prefHeight="18.0" prefWidth="603.0" styleClass="allTasks-title" text="All Tasks" />
+            <Label prefHeight="18.0" prefWidth="603.0" styleClass="Tasks-title" text="All Tasks" />
             <ScrollPane prefHeight="388.0" prefWidth="600.0" styleClass="tasks-container">
               <content>
                   <Pane styleClass="task-card">

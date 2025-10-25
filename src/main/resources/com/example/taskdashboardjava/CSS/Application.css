@@ -86,7 +86,7 @@
     -fx-background-color: -contentArea-color;
 }
 
-.allTasks-title {
+.Tasks-title {
     -fx-font-size: 24;
     -fx-font-weight: bold;
     -fx-text-fill: #2c3e50;
