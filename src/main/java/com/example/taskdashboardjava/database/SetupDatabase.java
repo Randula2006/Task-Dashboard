@@ -10,9 +10,10 @@ public class SetupDatabase {
         String createTableTasks = """
                     CREATE TABLE IF NOT EXISTS tasks (
                         ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                        title TEXT NOT NULL,
+                        title TEXT ,
                         description TEXT,
                         due_date TEXT,
+                        priority TEXT,
                         category TEXT,
                         status TEXT
                     );
@@ -28,4 +29,5 @@ public class SetupDatabase {
             System.out.println("Failed to create tables.");
         }
     }
+
 }

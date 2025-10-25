@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class DatabaseConnection{
 
     private static final String DB_PATH = "data/task_dashboard.db";
-    private static final String URL = "jdbc:sqlite:" + DB_PATH;
+    public static final String URL = "jdbc:sqlite:" + DB_PATH;
 
     public static Connection connect(){
         Connection conn = null;
@@ -33,4 +33,6 @@ public class DatabaseConnection{
         }
 
     }
+
+
 }
