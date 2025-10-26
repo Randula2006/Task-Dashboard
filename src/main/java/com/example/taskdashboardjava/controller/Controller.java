@@ -12,13 +12,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class Controller {
-    public List<String> categories = Arrays.asList("All Tasks", "Work", "Personal", "Others");
-
     // Inject the Add Task button from your Main.fxml
     @FXML
     private Button AddTask;
@@ -105,6 +101,4 @@ public class Controller {
         fadeIn.setToValue(1);
         fadeIn.play();
     }
-
-
 }

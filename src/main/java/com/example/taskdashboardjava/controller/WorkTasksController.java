@@ -1,5 +1,4 @@
 package com.example.taskdashboardjava.controller;
 
-public class Card {
-
+public class WorkTasksController {
 }
