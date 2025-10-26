@@ -1,7 +1,6 @@
 package com.example.taskdashboardjava.controller;
 
-import com.example.taskdashboardjava.database.DatabaseConnection;
-import com.example.taskdashboardjava.database.InsertIntoDB;
+import com.example.taskdashboardjava.database.DatabaseHandler;
 import com.example.taskdashboardjava.model.TaskPriority;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,7 +39,7 @@ public class AddTaskPopupWindowsController implements Initializable {
         System.out.println("Date: " + date);
         System.out.println("Priority: " + (priority != null ? priority.getName() : "None"));
 
-        InsertIntoDB.InsertTask(title, description, date, (priority != null ? priority.getName() : "None"));
+        DatabaseHandler.InsertTask(title, description, date, (priority != null ? priority.getName() : "None"));
         Stage stage = (Stage) createAddTask.getScene().getWindow();
         stage.close();
 
