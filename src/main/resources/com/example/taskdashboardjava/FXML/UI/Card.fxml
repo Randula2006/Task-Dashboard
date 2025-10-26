@@ -3,25 +3,47 @@
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane styleClass="task-card" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskdashboardjava.controller.CardController">
-        <children>
-            <Label fx:id="taskTitle" layoutY="28.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-title" text="Task Title" />
-            <Label fx:id="taskDueDate" layoutX="-1.0" layoutY="162.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-dueDate" text="Due Date" />
-            <Label fx:id="taskStatus" layoutY="91.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-status" text="Status" />
-            <Label fx:id="taskPriority" layoutX="184.0" layoutY="28.0" prefHeight="18.0" prefWidth="81.0" styleClass="task-priority" text="Priority" />
-            <Button fx:id="taskEditBtn" layoutX="157.0" layoutY="163.0" mnemonicParsing="false" text="EDIT">
-                <styleClass>
-                    <String fx:value="task-btn" />
-                    <String fx:value="edit-btn" />
-                </styleClass>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskdashboardjava.controller.Card">
+   <children>
+      <Pane layoutX="10.0" layoutY="10.0" styleClass="task-card">
+         <children>
+            <Label layoutY="28.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-title" text="Task Title" />
+            <Label layoutX="-1.0" layoutY="162.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-dueDate" text="Due Date" />
+            <Label layoutY="91.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-status" text="Status" />
+            <Label layoutX="184.0" layoutY="28.0" prefHeight="18.0" prefWidth="81.0" styleClass="task-priority" text="Priority" />
+            <Button layoutX="157.0" layoutY="163.0" mnemonicParsing="false" text="EDIT">
+               <styleClass>
+                  <String fx:value="task-btn" />
+                  <String fx:value="edit-btn" />
+               </styleClass>
             </Button>
-            <Button fx:id="taskDeleteBtn" layoutX="209.0" layoutY="163.0" mnemonicParsing="false" text="DELETE">
-                <styleClass>
-                    <String fx:value="task-btn" />
-                    <String fx:value="delete-btn" />
-                </styleClass>
+            <Button layoutX="209.0" layoutY="163.0" mnemonicParsing="false" text="DELETE">
+               <styleClass>
+                  <String fx:value="task-btn" />
+                  <String fx:value="delete-btn" />
+               </styleClass>
             </Button>
-        </children>
-</Pane>
+         </children>
+      </Pane>
+      <Label layoutX="10.0" layoutY="38.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-title" text="Task Title" />
+      <Label layoutX="9.0" layoutY="172.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-dueDate" text="Due Date" />
+      <Label layoutX="10.0" layoutY="101.0" prefHeight="18.0" prefWidth="294.0" styleClass="task-status" text="Status" />
+      <Label layoutX="194.0" layoutY="38.0" prefHeight="18.0" prefWidth="81.0" styleClass="task-priority" text="Priority" />
+      <Button layoutX="167.0" layoutY="173.0" mnemonicParsing="false" text="EDIT">
+         <styleClass>
+            <String fx:value="task-btn" />
+            <String fx:value="edit-btn" />
+         </styleClass>
+      </Button>
+      <Button layoutX="219.0" layoutY="173.0" mnemonicParsing="false" text="DELETE">
+         <styleClass>
+            <String fx:value="task-btn" />
+            <String fx:value="delete-btn" />
+         </styleClass>
+      </Button>
+   </children>
+</AnchorPane>
