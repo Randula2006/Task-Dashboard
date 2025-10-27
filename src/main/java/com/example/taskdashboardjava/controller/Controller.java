@@ -20,6 +20,7 @@ import java.util.Objects;
 
 public class Controller {
     private List<Task> tasks = new ArrayList<>();
+    private String currentView;
 
     // Inject the Add Task button from your Main.fxml
     @FXML
@@ -30,7 +31,8 @@ public class Controller {
 
     @FXML
     public void initialize() throws IOException {
-        loadUI("AllTasks");
+        this.currentView = "AllTasks";
+        loadUI(currentView);
         System.out.println("Initialized with All Tasks view.");
     }
 
@@ -46,6 +48,8 @@ public class Controller {
             System.out.println("Add Task button clicked!");
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/AddTaskPopupWindows.fxml")));
             Parent popupRoot = loader.load();
+
+            AddTaskPopupWindowsController popupController = loader.getController();
 
 //            create a new stage for the popup
             Stage popupStage = new Stage();
@@ -66,6 +70,10 @@ public class Controller {
 //            waiting until the popup window in closed
             popupStage.showAndWait();
 
+            if (popupController.isTaskAdded()) {
+                // If a task was added, reload the current view
+                loadUI(this.currentView);
+            }
 
         }catch (Exception e){
             System.err.println("Error loading Add Task popup FXML:");
@@ -74,7 +82,7 @@ public class Controller {
     }
 
     private void loadUI(String fxmlFileName) throws IOException {
-
+        this.currentView = fxmlFileName;
         AnchorPane newPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/" + fxmlFileName + ".fxml")));
         String cssFile = Objects.requireNonNull(this.getClass().getResource("/com/example/taskdashboardjava/CSS/Application.css")).toExternalForm();
         newPane.getStylesheets().add(cssFile);

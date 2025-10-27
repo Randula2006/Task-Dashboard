@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 
 public class AddTaskPopupWindowsController implements Initializable {
 
+    private boolean taskAdded = false;
+
     @FXML
     private TextField addTaskTitle;
     @FXML
@@ -40,6 +42,7 @@ public class AddTaskPopupWindowsController implements Initializable {
         System.out.println("Priority: " + (priority != null ? priority.getName() : "None"));
 
         DatabaseHandler.InsertTask(title, description, date, (priority != null ? priority.getName() : "None"));
+        this.taskAdded = true;
         Stage stage = (Stage) createAddTask.getScene().getWindow();
         stage.close();
 
@@ -97,5 +100,7 @@ public class AddTaskPopupWindowsController implements Initializable {
         // cancelButton.setOnAction(event -> handleCancel());
     }
 
-
+    public boolean isTaskAdded() {
+        return taskAdded;
+    }
 }
