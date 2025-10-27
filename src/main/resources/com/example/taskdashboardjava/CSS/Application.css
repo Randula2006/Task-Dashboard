@@ -151,8 +151,8 @@
     -fx-padding: 8 12 8 12;
     -fx-alignment: center;
     -fx-background-radius: 10;
-    -fx-translate-x: 45;
-    -fx-translate-y: -4;
+    /*-fx-translate-x: 45;*/
+    /*-fx-translate-y: -4;*/
 }
 .task-dueDate{
     -fx-font-size: 15;
