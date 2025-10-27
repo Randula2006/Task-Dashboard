@@ -27,12 +27,7 @@
          <children>
             <Label styleClass="sidebar-title" text="Categories" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="categoryBtnHolder">
-               <children>
-                  <Button layoutX="-23.0" layoutY="14.0" mnemonicParsing="false" onAction="#showAllTasks" prefHeight="26.0" prefWidth="188.0" styleClass="categoryBtn" text="All Tasks" />
-                  <Button layoutX="-23.0" layoutY="49.0" mnemonicParsing="false" onAction="#showWorkTasks" prefHeight="26.0" prefWidth="188.0" styleClass="categoryBtn" text="Work" />
-                  <Button layoutX="-23.0" layoutY="87.0" mnemonicParsing="false" onAction="#showPersonalTasks" prefHeight="26.0" prefWidth="188.0" styleClass="categoryBtn" text="Personal" />
-                  <Button layoutX="-23.0" layoutY="124.0" mnemonicParsing="false" onAction="#showOtherTasks" prefHeight="26.0" prefWidth="188.0" styleClass="categoryBtn" text="Others" />
-               </children>
+
             </AnchorPane>
          </children>
       </VBox>

@@ -1,5 +1,6 @@
 package com.example.taskdashboardjava.controller;
 
+import com.example.taskdashboardjava.database.DatabaseHandler;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,14 +8,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Controller {
+    private List<Task> tasks = new ArrayList<>();
+
     // Inject the Add Task button from your Main.fxml
     @FXML
     private Button AddTask;
@@ -67,26 +73,11 @@ public class Controller {
         }
     }
 
-    @FXML
-    private void showWorkTasks() throws IOException {
-        loadUI("WorkTasks");
-        System.out.println("Work Tasks button clicked!");
-    }
-
-    @FXML
-    private void showPersonalTasks() throws IOException {
-        loadUI("PersonalTasks");
-        System.out.println("Personal Tasks button clicked!");
-    }
-
-    @FXML
-    private void showOtherTasks() throws IOException {
-        loadUI("OthersTasks");
-        System.out.println("Other Tasks button clicked!");
-    }
-
     private void loadUI(String fxmlFileName) throws IOException {
+
         AnchorPane newPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/" + fxmlFileName + ".fxml")));
+        String cssFile = Objects.requireNonNull(this.getClass().getResource("/com/example/taskdashboardjava/CSS/Application.css")).toExternalForm();
+        newPane.getStylesheets().add(cssFile);
         contentArea.getChildren().setAll(newPane);
 
         // Make it fit to the parent area
@@ -101,4 +92,7 @@ public class Controller {
         fadeIn.setToValue(1);
         fadeIn.play();
     }
+
+
+
 }

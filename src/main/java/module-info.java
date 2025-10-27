@@ -11,6 +11,7 @@ module com.example.taskdashboardjava {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires javafx.graphics;
 
     opens com.example.taskdashboardjava to javafx.fxml;
     exports com.example.taskdashboardjava;

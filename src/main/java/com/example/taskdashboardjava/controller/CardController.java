@@ -9,7 +9,7 @@ public class CardController {
     @FXML private Label taskStatus;
     @FXML private Label taskDueDate;
     @FXML private Label taskPriority;
-    @FXML private Label taskDescription;
+//    @FXML private Label taskDescription;
     @FXML private Button taskEditBtn;
     @FXML private Button taskDeleteBtn;
 
@@ -18,7 +18,8 @@ public class CardController {
         taskStatus.setText(task.getStatus());
         taskDueDate.setText(task.getDueDate());
         taskPriority.setText(task.getPriority());
-        taskDescription.setText(task.getDescription());
+//        taskDescription.setText(task.getDescription());
 
     }
+
 }
