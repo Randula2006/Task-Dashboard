@@ -33,7 +33,10 @@ public class AllTasksController {
 
         if (categorizedTasks == null || categorizedTasks.isEmpty()) {
             System.out.println("No tasks to display.");
-            cardContainerVBox.getChildren().add(new Label("No tasks found. Add one!"));
+            Label noTasksLabel = new Label("No tasks available.");
+            noTasksLabel.setStyle("-fx-font-size: 16px; -fx-padding: 20; -fx-text-fill: gray; -fx-alignment: center;");
+            cardContainerVBox.getChildren().add(noTasksLabel);
+
             return;
         }
 

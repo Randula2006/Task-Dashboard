@@ -42,12 +42,12 @@ public class DatabaseHandler {
         String GetAllTasks = """ 
                 SELECT * FROM tasks;
                 """;
+        List<Task> tasks = new ArrayList<>();
 
         try(var conn = DriverManager.getConnection(DatabaseConnection.URL);
             var stmt = conn.prepareStatement(GetAllTasks);){
 
             ResultSet rs = stmt.executeQuery();
-            List<Task> tasks = new ArrayList<>();
 
             while (rs.next()){
                 Task task = new Task(
@@ -64,18 +64,25 @@ public class DatabaseHandler {
             System.out.println("Tasks retrieved successfully.");
             System.out.println(tasks.size() + " tasks found.");
             System.out.println(tasks);
-            return tasks;
+
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
             System.out.println("Failed to retrieve tasks.");
         }
-        return null;
+        return tasks;
     }
 
     public static Map<String, List<Task>> getAllTasksByCategory() {
         Map<String, List<Task>> categorized = new HashMap<>();
         List<Task> allTasks = getAllTask();
+
+        // --- ADD THIS SAFETY CHECK ---
+        if (allTasks == null) {
+            System.err.println("Database returned null tasks. Returning empty map.");
+            return categorized; // Returns an empty map instead of crashing
+        }
+        // -----------------------------
 
         for (Task task : allTasks) {
             String category = task.getCategory();
