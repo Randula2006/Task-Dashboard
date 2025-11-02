@@ -258,102 +258,48 @@
     -fx-background-color: #5a6268;
 }
 
+/*-----------------------------------Sidebar CSS-----------------------------------*/
+
 .sidebar {
-    -fx-background-color: #f8f9fa; /* Light grey background */
-    -fx-padding: 15px;
+    -fx-background-color: #f8f9fa; /* Light grey background for the entire sidebar */
+    -fx-padding: 20px 0 0 0; /* Padding only at the top of the entire sidebar */
+    -fx-border-color: #e0e0e0; /* Subtle right border to separate from content */
+    -fx-border-width: 0 1px 0 0;
+    -fx-spacing: 0; /* Important: Remove VBox spacing here, as categoryBtnHolder will manage item spacing/indentation */
+    -fx-alignment: top-left; /* Align children to top-left within the VBox */
 }
 
-/* Style for the "Categories" header Label */
 .sidebar-title {
-    -fx-font-size: 18px;
+    -fx-font-size: 16px; /* Slightly smaller than previous to match image */
     -fx-font-weight: bold;
-    -fx-padding: 0 0 10px 0; /* Padding below the title */
-    -fx-text-fill: #333; /* Dark grey text */
+    -fx-padding: 0 0 15px 20px; /* Padding bottom and left to indent the title */
+    -fx-text-fill: #333; /* Dark grey text color */
 }
 
-/* Style for individual category items (labels) */
-.category-item {
-    .sidebar {
-        -fx-background-color: #f8f9fa; /* Light grey background */
-        -fx-padding: 15px;
-    }
-
-    /* Style for the "Categories" header Label */
-    .sidebar-title {
-        -fx-font-size: 18px;
-        -fx-font-weight: bold;
-        -fx-padding: 0 0 10px 0; /* Padding below the title */
-        -fx-text-fill: #333; /* Dark grey text */
-    }
-
-    /* Style for individual category items (labels) */
-    .category-item {
-        -fx-padding: 8px 15px; /* Padding inside the label */
-        -fx-font-size: 14px;
-        -fx-text-fill: #333; /* Default text color */
-        -fx-background-color: transparent; /* No background by default */
-        -fx-cursor: hand; /* Changes cursor to a hand on hover, indicating it's clickable */
-        -fx-pref-width: -1; /* Reset preferred width so it takes width of parent VBox */
-        -fx-background-radius: 5px; /* Slightly rounded corners */
-    }
-
-    /* Hover effect for category items */
-    .category-item:hover {
-        -fx-background-color: #e9ecef; /* Light grey background on hover */
-    }
-
-    /* Style for the currently selected category item */
-    .category-item.selected-category {
-        -fx-background-color: #007bff; /* Blue background for selected item */
-        -fx-text-fill: white; /* White text for selected item */
-        -fx-font-weight: bold; /* Bold text for selected item */
-    }
-
-    /* --- Top Bar Styles --- */
-    .top-bar {
-        -fx-background-color: #ffffff; /* White background for the top bar */
-        -fx-padding: 10px 20px;
-        -fx-alignment: CENTER_LEFT; /* Align content to the left vertically centered */
-        -fx-border-width: 0 0 1px 0; /* Bottom border */
-        -fx-border-color: #e0e0e0;
-    }
-
-    .title-header {
-        -fx-font-size: 24px;
-        -fx-font-weight: bold;
-        -fx-text-fill: #333;
-    }
-
-    .addTaskBtn-primary {
-        -fx-background-color: #007bff;
-        -fx-text-fill: white;
-        -fx-font-weight: bold;
-        -fx-padding: 8px 15px;
-        -fx-background-radius: 5px;
-        -fx-cursor: hand;
-        -fx-alignment: CENTER_LEFT;
-    }
-
-    .addTaskBtn-primary:hover {
-        -fx-background-color: #0056b3;
-    }
-
-
-    /* --- Content Area Styles --- */
-    .content-area {
-        -fx-background-color: #f0f2f5; /* Light grey background for content */
-        -fx-padding: 20px;
-    }
+.categoryBtnHolder { /* This is your AnchorPane holding the VBox of Labels */
+    -fx-padding: 0 10px; /* Horizontal padding to indent the category items from sidebar edges */
+    /* No -fx-alignment needed here if the VBox inside fills the AnchorPane */
 }
 
-/* Hover effect for category items */
+.category-item { /* This style is applied to the Labels created in Java */
+    -fx-padding: 10px 15px; /* Vertical and horizontal padding within each category item */
+    -fx-font-size: 14px;
+    -fx-text-fill: #333; /* Default text color for non-selected items */
+    -fx-background-color: transparent; /* No background by default */
+    -fx-cursor: hand; /* Changes cursor to a hand on hover */
+    -fx-background-radius: 8px; /* Rounded corners for the item background */
+    -fx-alignment: CENTER_LEFT; /* Align text to the left, vertically centered */
+    -fx-font-weight: normal; /* Normal font weight for non-selected items */
+}
+
 .category-item:hover {
-    -fx-background-color: #e9ecef; /* Light grey background on hover */
+    -fx-background-color: #e0e0e0; /* A soft grey background on hover */
+    -fx-text-fill: #333; /* Keep text color dark on hover for non-selected items */
 }
 
-.category-item.selected-category {
-    -fx-background-color: #007bff; /* Example: Blue background for selected item */
-    -fx-text-fill: white; /* Example: White text for selected item */
+.category-item.selected-category { /* Style for the actively selected category */
+    -fx-background-color: #007bff; /* Bright blue background for selected item */
+    -fx-text-fill: white; /* White text for selected item */
     -fx-font-weight: bold; /* Bold text for selected item */
+    -fx-background-radius: 8px; /* Match the radius for consistency */
 }
-
