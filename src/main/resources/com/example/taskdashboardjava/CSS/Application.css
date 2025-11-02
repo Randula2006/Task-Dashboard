@@ -258,4 +258,102 @@
     -fx-background-color: #5a6268;
 }
 
+.sidebar {
+    -fx-background-color: #f8f9fa; /* Light grey background */
+    -fx-padding: 15px;
+}
+
+/* Style for the "Categories" header Label */
+.sidebar-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10px 0; /* Padding below the title */
+    -fx-text-fill: #333; /* Dark grey text */
+}
+
+/* Style for individual category items (labels) */
+.category-item {
+    .sidebar {
+        -fx-background-color: #f8f9fa; /* Light grey background */
+        -fx-padding: 15px;
+    }
+
+    /* Style for the "Categories" header Label */
+    .sidebar-title {
+        -fx-font-size: 18px;
+        -fx-font-weight: bold;
+        -fx-padding: 0 0 10px 0; /* Padding below the title */
+        -fx-text-fill: #333; /* Dark grey text */
+    }
+
+    /* Style for individual category items (labels) */
+    .category-item {
+        -fx-padding: 8px 15px; /* Padding inside the label */
+        -fx-font-size: 14px;
+        -fx-text-fill: #333; /* Default text color */
+        -fx-background-color: transparent; /* No background by default */
+        -fx-cursor: hand; /* Changes cursor to a hand on hover, indicating it's clickable */
+        -fx-pref-width: -1; /* Reset preferred width so it takes width of parent VBox */
+        -fx-background-radius: 5px; /* Slightly rounded corners */
+    }
+
+    /* Hover effect for category items */
+    .category-item:hover {
+        -fx-background-color: #e9ecef; /* Light grey background on hover */
+    }
+
+    /* Style for the currently selected category item */
+    .category-item.selected-category {
+        -fx-background-color: #007bff; /* Blue background for selected item */
+        -fx-text-fill: white; /* White text for selected item */
+        -fx-font-weight: bold; /* Bold text for selected item */
+    }
+
+    /* --- Top Bar Styles --- */
+    .top-bar {
+        -fx-background-color: #ffffff; /* White background for the top bar */
+        -fx-padding: 10px 20px;
+        -fx-alignment: CENTER_LEFT; /* Align content to the left vertically centered */
+        -fx-border-width: 0 0 1px 0; /* Bottom border */
+        -fx-border-color: #e0e0e0;
+    }
+
+    .title-header {
+        -fx-font-size: 24px;
+        -fx-font-weight: bold;
+        -fx-text-fill: #333;
+    }
+
+    .addTaskBtn-primary {
+        -fx-background-color: #007bff;
+        -fx-text-fill: white;
+        -fx-font-weight: bold;
+        -fx-padding: 8px 15px;
+        -fx-background-radius: 5px;
+        -fx-cursor: hand;
+        -fx-alignment: CENTER_LEFT;
+    }
+
+    .addTaskBtn-primary:hover {
+        -fx-background-color: #0056b3;
+    }
+
+
+    /* --- Content Area Styles --- */
+    .content-area {
+        -fx-background-color: #f0f2f5; /* Light grey background for content */
+        -fx-padding: 20px;
+    }
+}
+
+/* Hover effect for category items */
+.category-item:hover {
+    -fx-background-color: #e9ecef; /* Light grey background on hover */
+}
+
+.category-item.selected-category {
+    -fx-background-color: #007bff; /* Example: Blue background for selected item */
+    -fx-text-fill: white; /* Example: White text for selected item */
+    -fx-font-weight: bold; /* Bold text for selected item */
+}
 
