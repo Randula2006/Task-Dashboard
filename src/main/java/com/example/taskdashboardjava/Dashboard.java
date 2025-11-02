@@ -30,8 +30,7 @@ public class Dashboard extends Application {
 
            //setting the Image Icon for the window
            Image icon = new Image(Objects.requireNonNull(
-                           getClass().getResource("/com/example/taskdashboardjava/Images/Icon.png"))
-                   .toExternalForm()
+                           getClass().getResource("/com/example/taskdashboardjava/Images/Icon.png")).toExternalForm()
            );
            stage.getIcons().add(icon);
            stage.setTitle("Task Dashboard");
