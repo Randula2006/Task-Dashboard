@@ -61,10 +61,10 @@
             </children>
         </HBox>
 
-        <HBox layoutX="444.0" layoutY="344.0" spacing="10.0">
+        <HBox layoutX="444.0" layoutY="344.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#handleSaveChanges" styleClass="save-changes-button" text="Save" />
-                <Button mnemonicParsing="false" onAction="#handleCancel" styleClass="cancel-button" text="Cancel" />
+                <Button mnemonicParsing="false" onAction="#handleSaveChanges" styleClass="addTask-AddBtn" text="Save Changes" />
+                <Button mnemonicParsing="false" onAction="#handleCancel" styleClass="addTask-CancelBtn" text="Cancel" />
             </children>
         </HBox>
     </children>
