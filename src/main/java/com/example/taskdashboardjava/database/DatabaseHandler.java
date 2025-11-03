@@ -3,6 +3,7 @@ package com.example.taskdashboardjava.database;
 import com.example.taskdashboardjava.controller.Task;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ public class DatabaseHandler {
 
         String InsertTaskSQL = """
                     INSERT INTO tasks (title, description, due_date, priority, category, status)
-                    VALUES (@title, @description, @date, @priority , "All Tasks", "Not started");
-                """;
+                    VALUES (?, ?, ?, ?, "All Tasks", "Pending");
+                """; // <-- FIXED: Was "Not started", now "Pending"
 
         try(var conn = DriverManager.getConnection(DatabaseConnection.URL);
             var pstmt= conn.prepareStatement(InsertTaskSQL)){
@@ -35,6 +36,36 @@ public class DatabaseHandler {
             System.out.println("Failed to insert task.");
         }
 
+    }
+
+    public static void updateTask(Task task) {
+        String updateTaskSQL = """
+                UPDATE tasks
+                SET title = ?,
+                    description = ?,
+                    due_date = ?,
+                    priority = ?,
+                    status = ?
+                WHERE ID = ?;
+                """;
+
+        try (var conn = DriverManager.getConnection(DatabaseConnection.URL);
+             var pstmt = conn.prepareStatement(updateTaskSQL)) {
+
+            pstmt.setString(1, task.getTitle());
+            pstmt.setString(2, task.getDescription());
+            pstmt.setString(3, (task.getDueDate() != null) ? task.getDueDate().toString() : "");
+            pstmt.setString(4, (task.getPriority() != null) ? task.getPriority().getName() : "Low");
+            pstmt.setString(5, (task.getStatus() != null) ? task.getStatus().getName() : "Pending");
+            pstmt.setInt(6, task.getId());
+
+            pstmt.executeUpdate();
+            System.out.println("Task ID: " + task.getId() + " updated successfully.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to update task ID: " + task.getId());
+        }
     }
 
     public static List<Task> getAllTask(){
@@ -63,7 +94,6 @@ public class DatabaseHandler {
             }
             System.out.println("Tasks retrieved successfully.");
             System.out.println(tasks.size() + " tasks found.");
-            System.out.println(tasks);
 
 
         }catch (SQLException e){
@@ -77,15 +107,17 @@ public class DatabaseHandler {
         Map<String, List<Task>> categorized = new HashMap<>();
         List<Task> allTasks = getAllTask();
 
-        // --- ADD THIS SAFETY CHECK ---
         if (allTasks == null) {
             System.err.println("Database returned null tasks. Returning empty map.");
-            return categorized; // Returns an empty map instead of crashing
+            return categorized;
         }
-        // -----------------------------
 
         for (Task task : allTasks) {
             String category = task.getCategory();
+            // This is a safety check in case the category is null in the database
+            if (category == null) {
+                category = "All Tasks";
+            }
             categorized.computeIfAbsent(category, k -> new ArrayList<>()).add(task);
         }
 

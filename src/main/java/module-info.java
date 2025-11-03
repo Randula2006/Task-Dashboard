@@ -12,6 +12,7 @@ module com.example.taskdashboardjava {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires javafx.graphics;
+    requires javafx.swing;
 
     opens com.example.taskdashboardjava to javafx.fxml;
     exports com.example.taskdashboardjava;
