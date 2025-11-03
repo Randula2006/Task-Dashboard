@@ -322,3 +322,7 @@
     -fx-padding: 5 0 -5 0;
     -fx-text-fill: #2c3e50;
 }
+
+.editSaveBtn{
+    -fx-translate-x: -10;
+}

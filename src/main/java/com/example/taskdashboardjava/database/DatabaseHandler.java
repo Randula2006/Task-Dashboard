@@ -2,10 +2,7 @@ package com.example.taskdashboardjava.database;
 
 import com.example.taskdashboardjava.controller.Task;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +14,8 @@ public class DatabaseHandler {
 
         String InsertTaskSQL = """
                     INSERT INTO tasks (title, description, due_date, priority, category, status)
-                    VALUES (?, ?, ?, ?, "All Tasks", "Pending");
-                """; // <-- FIXED: Was "Not started", now "Pending"
+                    VALUES (?, ?, ?, ?, 'Personal', 'Pending');
+                """;
 
         try(var conn = DriverManager.getConnection(DatabaseConnection.URL);
             var pstmt= conn.prepareStatement(InsertTaskSQL)){
@@ -30,12 +27,28 @@ public class DatabaseHandler {
             pstmt.executeUpdate();
             System.out.println("Task inserted successfully.");
 
-
         }catch (SQLException e){
             System.out.println(e.getMessage());
             System.out.println("Failed to insert task.");
         }
+    }
 
+    public static List<String> getAllCategories() {
+        // This query gets every unique category name from your tasks
+        String sql = "SELECT DISTINCT category FROM tasks WHERE category IS NOT NULL AND category != '' ORDER BY category";
+        List<String> categories = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(DatabaseConnection.URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                categories.add(rs.getString("category"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return categories;
     }
 
     public static void updateTask(Task task) {
@@ -45,6 +58,7 @@ public class DatabaseHandler {
                     description = ?,
                     due_date = ?,
                     priority = ?,
+                    category = ?,
                     status = ?
                 WHERE ID = ?;
                 """;
@@ -56,8 +70,12 @@ public class DatabaseHandler {
             pstmt.setString(2, task.getDescription());
             pstmt.setString(3, (task.getDueDate() != null) ? task.getDueDate().toString() : "");
             pstmt.setString(4, (task.getPriority() != null) ? task.getPriority().getName() : "Low");
-            pstmt.setString(5, (task.getStatus() != null) ? task.getStatus().getName() : "Pending");
-            pstmt.setInt(6, task.getId());
+
+            // This is the important part for saving the category
+            pstmt.setString(5, task.getCategory());
+
+            pstmt.setString(6, (task.getStatus() != null) ? task.getStatus().getName() : "Pending");
+            pstmt.setInt(7, task.getId());
 
             pstmt.executeUpdate();
             System.out.println("Task ID: " + task.getId() + " updated successfully.");
@@ -66,6 +84,39 @@ public class DatabaseHandler {
             System.out.println(e.getMessage());
             System.out.println("Failed to update task ID: " + task.getId());
         }
+    }
+
+    public static List<Task> getTasksByCategory(String category) {
+        // If the category is "All", we use the existing getAllTask()
+        if ("All".equalsIgnoreCase(category)) {
+            return getAllTask();
+        }
+
+        String sql = "SELECT * FROM tasks WHERE category = ?";
+        List<Task> tasks = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(DatabaseConnection.URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, category);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Task task = new Task(
+                        rs.getInt("ID"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("due_date"),
+                        rs.getString("priority"),
+                        rs.getString("category"),
+                        rs.getString("status")
+                );
+                tasks.add(task);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tasks;
     }
 
     public static List<Task> getAllTask(){
@@ -103,24 +154,4 @@ public class DatabaseHandler {
         return tasks;
     }
 
-    public static Map<String, List<Task>> getAllTasksByCategory() {
-        Map<String, List<Task>> categorized = new HashMap<>();
-        List<Task> allTasks = getAllTask();
-
-        if (allTasks == null) {
-            System.err.println("Database returned null tasks. Returning empty map.");
-            return categorized;
-        }
-
-        for (Task task : allTasks) {
-            String category = task.getCategory();
-            // This is a safety check in case the category is null in the database
-            if (category == null) {
-                category = "All Tasks";
-            }
-            categorized.computeIfAbsent(category, k -> new ArrayList<>()).add(task);
-        }
-
-        return categorized;
-    }
 }

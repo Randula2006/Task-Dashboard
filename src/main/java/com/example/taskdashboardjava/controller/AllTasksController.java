@@ -3,14 +3,14 @@ package com.example.taskdashboardjava.controller;
 import com.example.taskdashboardjava.database.DatabaseHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets; // <-- 1. IMPORT ADDED
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.TilePane; // <-- 1. IMPORT ADDED
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.List; // <-- Note: No Map import needed
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,60 +29,63 @@ public class AllTasksController {
 
         cardContainerVBox.getChildren().clear();
 
-        Map<String, List<Task>> categorizedTasks = DatabaseHandler.getAllTasksByCategory();
+        // --- THIS IS THE NEW FILTER LOGIC ---
+        // 1. Get the currently selected category from the CurrentView class
+        String categoryToLoad = CurrentView.selectedCategory;
+        System.out.println("AllTasksController loading tasks for: " + categoryToLoad);
 
-        if (categorizedTasks == null || categorizedTasks.isEmpty()) {
-            System.out.println("No tasks to display.");
-            Label noTasksLabel = new Label("No tasks available.");
+        // 2. Get ONLY the tasks for that category (This is the new method)
+        List<Task> tasks = DatabaseHandler.getTasksByCategory(categoryToLoad);
+
+        if (tasks == null || tasks.isEmpty()) {
+            System.out.println("No tasks to display for this category.");
+            Label noTasksLabel = new Label("No tasks available for '" + categoryToLoad + "'");
             noTasksLabel.setStyle("-fx-font-size: 16px; -fx-padding: 20; -fx-text-fill: gray; -fx-alignment: center;");
             cardContainerVBox.getChildren().add(noTasksLabel);
-
             return;
         }
 
-        // Loop through each category (e.g., "All Tasks", "Work")
-        for (String category : categorizedTasks.keySet()) {
+        // --- THIS PART IS NOW SIMPLER ---
+        // We don't loop through a Map, just the single filtered list.
 
-            // 1. Create and add the category title label
-            Label categoryLabel = new Label(category);
-            categoryLabel.getStyleClass().add("category-title");
-            categoryLabel.setStyle("-fx-padding: 10 0 5 15; -fx-font-size: 20px; -fx-font-weight: bold;");
-            cardContainerVBox.getChildren().add(categoryLabel);
+        // 1. Create and add the category title label
+        Label categoryLabel = new Label(categoryToLoad);
+        categoryLabel.getStyleClass().add("category-title");
+        categoryLabel.setStyle("-fx-padding: 10 0 5 15; -fx-font-size: 20px; -fx-font-weight: bold;");
+        cardContainerVBox.getChildren().add(categoryLabel);
 
-            // 2. CREATE A NEW TILEPANE FOR THIS CATEGORY'S CARDS
-            TilePane cardGrid = new TilePane();
-            cardGrid.setPrefColumns(2); // This sets the 2-column layout
-            cardGrid.setHgap(15);       // Horizontal spacing between cards
-            cardGrid.setVgap(15);       // Vertical spacing between cards
-            cardGrid.setPadding(new Insets(0, 15, 15, 15)); // This now works
+        // 2. CREATE A NEW TILEPANE FOR THIS CATEGORY'S CARDS
+        TilePane cardGrid = new TilePane();
+        cardGrid.setPrefColumns(2); // This sets the 2-column layout
+        cardGrid.setHgap(15);       // Horizontal spacing between cards
+        cardGrid.setVgap(15);       // Vertical spacing between cards
+        cardGrid.setPadding(new Insets(0, 15, 15, 15)); // This now works
 
-            // 3. Loop through all tasks *in this category*
-            for (Task task : categorizedTasks.get(category)) {
-                try {
-                    // 4. Load the Card.fxml for each task
-                    // <-- 2. THIS PATH IS NOW CORRECTED (with /UI/)
-                    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/UI/Card.fxml")));
+        // 3. Loop through all tasks *in this category*
+        for (Task task : tasks) {
+            try {
+                // 4. Load the Card.fxml for each task
+                FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/UI/Card.fxml")));
 
-                    Parent taskCard = loader.load();
+                Parent taskCard = loader.load();
 
-                    // 5. Get the card's controller and set its data
-                    CardController cardController = loader.getController();
-                    cardController.setData(task);
+                // 5. Get the card's controller and set its data
+                CardController cardController = loader.getController();
+                cardController.setData(task);
 
-                    // 6. ADD THE CARD TO THE TILEPANE (not the VBox)
-                    cardGrid.getChildren().add(taskCard);
+                // 6. ADD THE CARD TO THE TILEPANE (not the VBox)
+                cardGrid.getChildren().add(taskCard);
 
-                } catch (IOException e) {
-                    System.err.println("Failed to load task card for: " + task.getTitle());
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    System.err.println("Failed to find Card.fxml. Check your path: /com/example/taskdashboardjava/FXML/UI/Card.fxml");
-                    e.printStackTrace();
-                }
+            } catch (IOException e) {
+                System.err.println("Failed to load task card for: " + task.getTitle());
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                System.err.println("Failed to find Card.fxml. Check your path: /com/example/taskdashboardjava/FXML/UI/Card.fxml");
+                e.printStackTrace();
             }
-
-            // 7. ADD THE COMPLETED TILEPANE TO THE MAIN VBox
-            cardContainerVBox.getChildren().add(cardGrid);
         }
+
+        // 7. ADD THE COMPLETED TILEPANE TO THE MAIN VBox
+        cardContainerVBox.getChildren().add(cardGrid);
     }
 }

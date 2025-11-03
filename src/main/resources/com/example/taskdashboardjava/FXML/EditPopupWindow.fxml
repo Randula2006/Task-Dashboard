@@ -12,48 +12,64 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="625.0" styleClass="popup-root" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskdashboardjava.controller.editTaskPopupWindow">
+<AnchorPane prefHeight="440.0" prefWidth="625.0" styleClass="popup-root" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.taskdashboardjava.controller.editTaskPopupWindow">
     <children>
         <Label layoutX="30.0" layoutY="25.0" prefHeight="18.0" prefWidth="110.0" styleClass="popup-title" text="Edit Task" />
 
-        <Label layoutX="30.0" layoutY="70.0" styleClass="addTask-priority" text="Task Title" />
-        <TextField fx:id="editTaskTitle" layoutX="30.0" layoutY="95.0" prefHeight="26.0" prefWidth="436.0" />
+        <Label layoutX="30.0" layoutY="70.0" text="Task Title">
+         <styleClass>
+            <String fx:value="input-label" />
+            <String fx:value="addTask-priority" />
+         </styleClass></Label>
+        <TextField fx:id="editTaskTitle" layoutX="30.0" layoutY="95.0" prefHeight="26.0" prefWidth="560.0" />
 
-        <Label layoutX="30.0" layoutY="142.0" styleClass="addTask-priority" text="Description" />
-        <TextArea fx:id="editTaskDescription" layoutX="30.0" layoutY="167.0" prefHeight="72.0" prefWidth="440.0" />
+        <Label layoutX="30.0" layoutY="142.0" text="Description">
+         <styleClass>
+            <String fx:value="input-label" />
+            <String fx:value="addTask-priority" />
+         </styleClass></Label>
+        <TextArea fx:id="editTaskDescription" layoutX="30.0" layoutY="167.0" prefHeight="72.0" prefWidth="560.0" />
 
         <Label layoutX="30.0" layoutY="256.0" text="Due Date">
          <styleClass>
+            <String fx:value="input-label" />
             <String fx:value="addTask-priority" />
-            <String fx:value="editTitle" />
          </styleClass></Label>
-        <DatePicker fx:id="editTaskDueDate" layoutX="30.0" layoutY="284.0" prefHeight="26.0" prefWidth="206.0" />
+        <DatePicker fx:id="editTaskDueDate" layoutX="30.0" layoutY="284.0" prefHeight="26.0" prefWidth="170.0" />
 
-        <Label layoutX="272.0" layoutY="256.0" text="Status">
+        <Label layoutX="225.0" layoutY="256.0" text="Status">
          <styleClass>
+            <String fx:value="input-label" />
             <String fx:value="addTask-priority" />
-            <String fx:value="editTitle" />
          </styleClass></Label>
-        <ComboBox fx:id="editTaskStatus" layoutX="272.0" layoutY="285.0" prefHeight="26.0" prefWidth="198.0" />
+        <ComboBox fx:id="editTaskStatus" layoutX="225.0" layoutY="285.0" prefHeight="26.0" prefWidth="170.0" />
 
-        <HBox layoutX="30.0" layoutY="314.0" prefHeight="72.0" prefWidth="362.0" spacing="35.0">
+        <Label layoutX="420.0" layoutY="256.0" text="Category">
+         <styleClass>
+            <String fx:value="input-label" />
+            <String fx:value="addTask-priority" />
+         </styleClass></Label>
+        <ComboBox fx:id="editTaskCategory" layoutX="420.0" layoutY="285.0" prefHeight="26.0" prefWidth="170.0" />
+
+
+        <HBox layoutX="30.0" layoutY="330.0" prefHeight="72.0" prefWidth="362.0" spacing="35.0">
             <children>
                 <VBox spacing="5.0">
                     <children>
                         <Label text="Priority">
                      <styleClass>
+                        <String fx:value="input-label" />
                         <String fx:value="addTask-priority" />
-                        <String fx:value="editTitle" />
                      </styleClass></Label>
-                        <ComboBox fx:id="editTaskPriority" prefHeight="26.0" prefWidth="207.0" />
+                        <ComboBox fx:id="editTaskPriority" prefHeight="26.0" prefWidth="170.0" />
                     </children>
                 </VBox>
                 <VBox spacing="5.0">
                     <children>
                         <Label text="Priority Color">
                      <styleClass>
+                        <String fx:value="input-label" />
                         <String fx:value="addTask-priority" />
-                        <String fx:value="editTitle" />
                      </styleClass></Label>
                         <ColorPicker fx:id="editGetPriorityColor" prefHeight="26.0" prefWidth="114.0" />
                     </children>
@@ -61,10 +77,18 @@
             </children>
         </HBox>
 
-        <HBox layoutX="444.0" layoutY="344.0">
+        <HBox layoutX="444.0" layoutY="384.0" spacing="10.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#handleSaveChanges" styleClass="addTask-AddBtn" text="Save Changes" />
-                <Button mnemonicParsing="false" onAction="#handleCancel" styleClass="addTask-CancelBtn" text="Cancel" />
+                <Button mnemonicParsing="false" onAction="#handleSaveChanges" text="Save Changes">
+               <styleClass>
+                  <String fx:value="addTask-AddBtn" />
+                  <String fx:value="editSaveBtn" />
+               </styleClass></Button>
+                <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel">
+               <styleClass>
+                  <String fx:value="addTask-CancelBtn" />
+                  <String fx:value="editCancelBtn" />
+               </styleClass></Button>
             </children>
         </HBox>
     </children>

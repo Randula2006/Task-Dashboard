@@ -2,6 +2,7 @@ package com.example.taskdashboardjava.controller;
 
 import com.example.taskdashboardjava.database.DatabaseHandler;
 import javafx.animation.FadeTransition;
+import com.example.taskdashboardjava.controller.CurrentView; // Make sure this import is correct
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,22 +23,38 @@ import java.util.Arrays;
 
 public class Controller {
     private List<Task> tasks = new ArrayList<>();
-
-    /**
-     * Tracks the name of the currently loaded FXML file (e.g., "AllTasks")
-     * This is crucial for reloading the view.
-     */
     private String currentView;
 
     @FXML private AnchorPane categoryContainer;
     @FXML private Button AddTask;
     @FXML private AnchorPane contentArea;
 
+    // --- ADD THIS NEW PUBLIC METHOD ---
+    /**
+     * This method will be called by the CardController after an edit is saved.
+     * It refreshes both the category sidebar and the main task list.
+     */
+    public void refreshUI() {
+        try {
+            System.out.println("Refreshing entire UI...");
+            loadCategories(); // Reload the sidebar
+
+            // Reload the task list based on the currently selected category
+            loadUI("AllTasks");
+
+            // Re-highlight the selected category
+            highlightSelectedCategory(CurrentView.selectedCategory);
+        } catch (IOException e) {
+            System.err.println("Failed to refresh UI: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     public void initialize() throws IOException {
         loadCategories(); // Load categories into the sidebar
 
-        // This logic programmatically "clicks" the first category (e.g., "All") on startup
+        // This logic programmatically "clicks" the first category
         if (!categoryContainer.getChildren().isEmpty() && categoryContainer.getChildren().get(0) instanceof VBox) {
             VBox categoryLabelsVBox = (VBox) categoryContainer.getChildren().get(0);
             if (!categoryLabelsVBox.getChildren().isEmpty() && categoryLabelsVBox.getChildren().get(0) instanceof Label) {
@@ -49,8 +66,8 @@ public class Controller {
         }
 
         // Set the initial view name *before* loading it
-        this.currentView = "AllTasks";
-        loadUI(currentView);
+        CurrentView.selectedCategory = "All";
+        loadUI("AllTasks");
         System.out.println("Initialized with All Tasks view.");
     }
 
@@ -66,8 +83,6 @@ public class Controller {
             System.out.println("Add Task button clicked!");
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/AddTaskPopupWindows.fxml")));
             Parent popupRoot = loader.load();
-
-            // Get the controller for the popup window
             AddTaskPopupWindowsController popupController = loader.getController();
 
             // Create a new stage for the popup
@@ -82,17 +97,14 @@ public class Controller {
             popupStage.setScene(popupScene);
             popupStage.resizableProperty().setValue(Boolean.FALSE);
 
-            // This line pauses execution and WAITS for the popup to be closed
             popupStage.showAndWait();
 
-            /**
-             * This code runs ONLY after the popup is closed.
-             * We check the flag from the popup's controller.
-             */
             if (popupController.isTaskAdded()) {
-                // If a task was added, reload the view that is currently active.
-                System.out.println("Task added. Reloading view: " + this.currentView);
-                loadUI(this.currentView);
+                System.out.println("Task added. Reloading view...");
+                // --- THIS IS THE FIX ---
+                loadCategories(); // <-- This reloads the sidebar
+                loadUI(this.currentView); // This reloads the tasks
+                // --- END FIX ---
             } else {
                 System.out.println("Add task window was cancelled.");
             }
@@ -103,38 +115,30 @@ public class Controller {
         }
     }
 
-    /**
-     * Loads the specified FXML file into the contentArea and updates the currentView tracker.
-     */
     private void loadUI(String fxmlFileName) throws IOException {
-        // Update the tracker with the name of the view we are about to load
         this.currentView = fxmlFileName;
-
         AnchorPane newPane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/" + fxmlFileName + ".fxml")));
         String cssFile = Objects.requireNonNull(this.getClass().getResource("/com/example/taskdashboardjava/CSS/Application.css")).toExternalForm();
         newPane.getStylesheets().add(cssFile);
-
-        // Replace the old content with the new pane
         contentArea.getChildren().setAll(newPane);
-
-        // Make the new pane fit the content area
         AnchorPane.setTopAnchor(newPane, 0.0);
         AnchorPane.setBottomAnchor(newPane, 0.0);
         AnchorPane.setLeftAnchor(newPane, 0.0);
         AnchorPane.setRightAnchor(newPane, 0.0);
-
-        // Add a simple fade-in transition
         FadeTransition fadeIn = new FadeTransition(Duration.millis(200), newPane);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
         fadeIn.play();
     }
 
-    /**
-     * Creates and adds the category labels to the sidebar.
-     */
     private void loadCategories(){
-        List<String> dafultCategories = Arrays.asList("All" , "Work" , "Personal" , "Business");
+        // 1. Get all unique categories from the tasks table
+        List<String> categories = DatabaseHandler.getAllCategories();
+
+        // 2. Manually add "All" to the beginning of the list as a filter
+        if (!categories.contains("All")) {
+            categories.add(0, "All");
+        }
 
         VBox categoryLabelBox = new VBox(5);
         categoryLabelBox.setPrefWidth(categoryContainer.getPrefWidth());
@@ -144,50 +148,32 @@ public class Controller {
         AnchorPane.setLeftAnchor(categoryLabelBox, 0.0);
         AnchorPane.setRightAnchor(categoryLabelBox, 0.0);
 
-        for(String categoryName : dafultCategories){
+        for(String categoryName : categories){
             Label categoryLabel = new Label(categoryName);
             categoryLabel.getStyleClass().add("category-item");
             categoryLabel.setPrefWidth(Double.MAX_VALUE);
-
             categoryLabel.setOnMouseClicked(event -> {
                 handleCategorySelection(categoryName);
             });
-
             categoryLabelBox.getChildren().add(categoryLabel);
         }
-
         categoryContainer.getChildren().clear();
         categoryContainer.getChildren().add(categoryLabelBox);
     }
 
-    /**
-     * Handles the logic for when a category label is clicked.
-     */
     private void handleCategorySelection(String categoryName){
         System.out.println("Filtering tasks for category: " + categoryName);
+        CurrentView.selectedCategory = categoryName;
 
-        // TODO: This is where you will add logic to load different views
-        // For now, we'll just reload "AllTasks" regardless
         try {
-            if ("All".equals(categoryName)) {
-                loadUI("AllTasks");
-            } else {
-                // In the future, you might load a different FXML or
-                // pass the categoryName to AllTasksController
-                System.out.println("Loading for " + categoryName + " is not implemented, loading AllTasks.");
-                loadUI("AllTasks");
-            }
+            loadUI("AllTasks");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Visually highlight the selected category
         highlightSelectedCategory(categoryName);
     }
 
-    /**
-     * Updates the CSS style of the selected category label.
-     */
     private void highlightSelectedCategory(String selectedCategoryName){
         if(!categoryContainer.getChildren().isEmpty() && categoryContainer.getChildren().get(0) instanceof VBox){
             VBox categoryLabelBox = (VBox) categoryContainer.getChildren().get(0);
@@ -195,13 +181,9 @@ public class Controller {
             for(javafx.scene.Node node : categoryLabelBox.getChildren()){
                 if(node instanceof Label){
                     Label categoryLabel = (Label) node;
-                    // Clear all previous inline styles
                     categoryLabel.setStyle("");
-                    // Remove the "selected" class if it exists
                     categoryLabel.getStyleClass().remove("selected-category");
-
                     if(categoryLabel.getText().equals(selectedCategoryName)){
-                        // Add the "selected" class (defined in your CSS)
                         categoryLabel.getStyleClass().add("selected-category");
                     }
                 }

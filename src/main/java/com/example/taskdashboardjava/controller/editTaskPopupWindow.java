@@ -3,6 +3,7 @@ package com.example.taskdashboardjava.controller;
 import com.example.taskdashboardjava.database.DatabaseHandler;
 import com.example.taskdashboardjava.model.TaskPriority;
 import com.example.taskdashboardjava.model.TaskStatus;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class editTaskPopupWindow implements Initializable {
@@ -20,6 +22,7 @@ public class editTaskPopupWindow implements Initializable {
     @FXML private ComboBox<TaskPriority> editTaskPriority;
     @FXML private ColorPicker editGetPriorityColor;
     @FXML private ComboBox<TaskStatus> editTaskStatus;
+    @FXML private ComboBox<String> editTaskCategory;
 
     // This field holds the task we are editing
     private Task currentTask;
@@ -40,8 +43,21 @@ public class editTaskPopupWindow implements Initializable {
         setupStatusComboBox(); // Call the setup method
 
         editGetPriorityColor.setValue(Color.web("#1e5ae0"));
+        loadCategories();
     }
 
+    private void loadCategories() {
+        // Get categories from the database
+        List<String> categories = DatabaseHandler.getAllCategories();
+
+        // Note: We DON'T add "All" here, because you can't
+        // assign a task to the "All" filter.
+
+        editTaskCategory.setItems(FXCollections.observableArrayList(categories));
+
+        // This allows you to type a new category name
+        editTaskCategory.setEditable(true);
+    }
     // This method receives the task data from the card
     public void setTask(Task task) {
         this.currentTask = task; // Store the task object
@@ -52,6 +68,7 @@ public class editTaskPopupWindow implements Initializable {
         editTaskDueDate.setValue(task.getDueDate());
         editTaskPriority.setValue(task.getPriority());
         editTaskStatus.setValue(task.getStatus());
+        editTaskCategory.setValue(task.getCategory());
 
         if (task.getPriorityColor() != null && !task.getPriorityColor().isEmpty()) {
             try {
@@ -105,6 +122,11 @@ public class editTaskPopupWindow implements Initializable {
         currentTask.setDueDate(editTaskDueDate.getValue());
         currentTask.setPriority(editTaskPriority.getValue());
         currentTask.setStatus(editTaskStatus.getValue());
+
+        // Get the value from the combobox (either selected or typed)
+        String newCategory = editTaskCategory.getValue();
+        currentTask.setCategory(newCategory);
+
         currentTask.setPriorityColor(toWebColor(editGetPriorityColor.getValue()));
 
         // 3. THIS IS THE DATABASE SAVE

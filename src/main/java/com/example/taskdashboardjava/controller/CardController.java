@@ -67,19 +67,26 @@ public class CardController {
             // 5. Show the popup and WAIT for it to be closed
             popupStage.showAndWait();
 
-            // 6. THIS IS THE "RELOAD" PART
+            // 6. --- THIS IS THE "RELOAD" PART (MODIFIED) ---
             // After the popup is closed, check the flag from its controller
             if (popupController.isTaskSaved()) {
-                // If saved, refresh this card's data with the updated task object
-                System.out.println("Refreshing card data for: " + currentTask.getTitle());
-                this.setData(this.currentTask);
+                System.out.println("Task saved. Refreshing main UI.");
+
+                // 1. Get the main controller we stored in Dashboard.java
+                Controller mainController = (Controller) taskEditBtn.getScene().getRoot().getUserData();
+
+                // 2. Call the new refresh method
+                mainController.refreshUI();
             }
 
         } catch (IOException e) {
             System.err.println("Failed to load edit task popup:");
             e.printStackTrace();
         } catch (NullPointerException e) {
-            System.err.println("CRITICAL: Failed to find FXML file. Check the path in CardController.java.");
+            System.err.println("CRITICAL: Failed to find FXML file or Main Controller. Check path in CardController and UserData in Dashboard.java.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred in handleEditTask:");
             e.printStackTrace();
         }
     }
