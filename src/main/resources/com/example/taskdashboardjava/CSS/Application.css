@@ -1,8 +1,14 @@
 .root{
     -Accent-color: #f0f0f0;
+    -contentArea-color: #f8f9fc;
+    -taskCard-outline-color: #1e5ae0;
     -Btn-color: #007bff;
     -hover-Btn-color: #00bbf3;
-    -contentArea-color: #f8f9fc;
+    -deleteBtn-color: #dc3545;
+    -deleteBtn-Hover-color: #ff4d5a;
+    -editBtn-color: #11c235;
+    -editBtn-Hover-color: #29ec48;
+
     -fx-background-color: -Accent-color;
 
 }
@@ -118,7 +124,7 @@
     -fx-background-radius: 12;
     -fx-padding: 15 0 15 40;
     -fx-spacing: 10;
-    -fx-border-color: #1e5ae0;
+    -fx-border-color: -taskCard-outline-color;
     -fx-border-sroke-width: 2;
     -fx-border-radius: 12;
     /*-fx-transition: 0.3s;*/
@@ -174,21 +180,21 @@
 }
 
 .edit-btn {
-    -fx-background-color: #11c235;
+    -fx-background-color: -editBtn-color;
     -fx-translate-x: 19;
 }
 
 .delete-btn {
-    -fx-background-color: #dc3545;
+    -fx-background-color: -deleteBtn-color;
     -fx-translate-x: 29;
 }
 
 .edit-btn:hover {
-    -fx-background-color: #29ec48;
+    -fx-background-color: -editBtn-Hover-color;
 }
 
 .delete-btn:hover {
-    -fx-background-color: #ff4d5a;
+    -fx-background-color: -deleteBtn-Hover-color;
 }
 
 /* ──────────────── TRANSITIONS ──────────────── */
