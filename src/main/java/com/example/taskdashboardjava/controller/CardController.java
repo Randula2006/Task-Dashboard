@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class CardController {
     @FXML private Label taskTitle;
-    @FXML private Label taskStatus; // This is the label we are re-purposing
+    @FXML private Label taskStatus; // This label now shows the description
     @FXML private Label taskDueDate;
     @FXML private Label taskPriority;
     @FXML private Button taskEditBtn;
@@ -22,17 +22,18 @@ public class CardController {
 
     private Task currentTask;
 
+    // This method populates the card
     public void setData(Task task){
         this.currentTask = task;
-
         taskTitle.setText(task.getTitle());
         taskDueDate.setText(task.getDueDate() != null ? task.getDueDate().toString() : "No Date");
         taskPriority.setText(task.getPriority() != null ? task.getPriority().getName() : "N/A");
-
-        // Set the description to the taskStatus label
-        taskStatus.setText(task.getDescription() != null ? task.getDescription() : "");
+        taskStatus.setText(task.getDescription() != null ? task.getDescription() : ""); // Show description
     }
 
+    /**
+     * This method handles both opening the popup AND reloading the card.
+     */
     @FXML
     private void handleEditTask() {
         if (currentTask == null) {
@@ -41,8 +42,7 @@ public class CardController {
         }
 
         try {
-            // --- THIS IS THE FIX ---
-            // The filename was "editTask..." but your file is "EditTask..."
+            // 1. Load the popup FXML (fixed the capitalization error)
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/com/example/taskdashboardjava/FXML/EditPopupWindow.fxml")));
             Parent popupRoot = loader.load();
 
@@ -52,22 +52,23 @@ public class CardController {
             // 3. Pass the current task data to the popup
             popupController.setTask(currentTask);
 
-            // 4. Create and configure the new stage (window)
+            // 4. Create and configure the new stage
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initOwner(taskEditBtn.getScene().getWindow());
+            popupStage.setTitle("Edit Task");
 
             Scene popupScene = new Scene(popupRoot);
             String cssFile = Objects.requireNonNull(this.getClass().getResource("/com/example/taskdashboardjava/CSS/Application.css")).toExternalForm();
             popupScene.getStylesheets().add(cssFile);
             popupStage.setScene(popupScene);
-            popupStage.resizableProperty().setValue(Boolean.FALSE);
-            popupStage.setTitle("Edit Task");
+            popupStage.setResizable(false);
 
-            // 5. Show the popup and wait for it to be closed
+            // 5. Show the popup and WAIT for it to be closed
             popupStage.showAndWait();
 
-            // 6. Check if the task was saved
+            // 6. THIS IS THE "RELOAD" PART
+            // After the popup is closed, check the flag from its controller
             if (popupController.isTaskSaved()) {
                 // If saved, refresh this card's data with the updated task object
                 System.out.println("Refreshing card data for: " + currentTask.getTitle());
@@ -86,9 +87,6 @@ public class CardController {
     @FXML
     private void handleDeleteTask() {
         System.out.println("Delete button clicked for task: " + currentTask.getTitle());
-        // Here you would:
-        // 1. Show a confirmation dialog
-        // 2. Call DatabaseHandler.deleteTask(currentTask.getId())
-        // 3. Find a way to refresh the main view (this is more complex)
+        // TODO: Add delete logic here
     }
 }

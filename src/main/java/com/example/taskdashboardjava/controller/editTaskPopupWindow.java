@@ -6,7 +6,6 @@ import com.example.taskdashboardjava.model.TaskStatus;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -21,25 +20,33 @@ public class editTaskPopupWindow implements Initializable {
     @FXML private ComboBox<TaskPriority> editTaskPriority;
     @FXML private ColorPicker editGetPriorityColor;
     @FXML private ComboBox<TaskStatus> editTaskStatus;
-    @FXML private Pane rootPane;
 
+    // This field holds the task we are editing
     private Task currentTask;
-    private boolean taskSaved = false; // Flag to indicate if changes were saved
+
+    // This flag will tell the CardController to refresh
+    private boolean taskSaved = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Initialize Priority ComboBox
         editTaskPriority.getItems().setAll(TaskPriority.values());
-        setupPriorityComboBox();
+        editTaskPriority.setPromptText("Select Priority");
+        setupPriorityComboBox(); // Call the setup method
 
+        // Initialize Status ComboBox
         editTaskStatus.getItems().setAll(TaskStatus.values());
-        setupStatusComboBox();
+        editTaskStatus.setPromptText("Select Status");
+        setupStatusComboBox(); // Call the setup method
 
         editGetPriorityColor.setValue(Color.web("#1e5ae0"));
     }
 
+    // This method receives the task data from the card
     public void setTask(Task task) {
-        this.currentTask = task;
+        this.currentTask = task; // Store the task object
 
+        // Pre-fill the form fields
         editTaskTitle.setText(task.getTitle());
         editTaskDescription.setText(task.getDescription());
         editTaskDueDate.setValue(task.getDueDate());
@@ -49,43 +56,25 @@ public class editTaskPopupWindow implements Initializable {
         if (task.getPriorityColor() != null && !task.getPriorityColor().isEmpty()) {
             try {
                 editGetPriorityColor.setValue(Color.web(task.getPriorityColor()));
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 editGetPriorityColor.setValue(Color.web("#1e5ae0")); // Fallback
             }
         }
     }
 
-    // Getter for the save flag
+    /**
+     * This is the "reload" part. The CardController will call this
+     * after the popup closes to see if it needs to refresh.
+     */
     public boolean isTaskSaved() {
         return taskSaved;
     }
 
     @FXML
-    private void handleSaveChanges() {
-        // ... (Your validation code is good, keep it here) ...
-        if (editTaskTitle.getText() == null || editTaskTitle.getText().trim().isEmpty()) {
-            showAlert("Validation Error", "Task title cannot be empty.", Alert.AlertType.ERROR);
-            return;
-        }
-
-        if (currentTask == null) {
-            showAlert("Error", "No task loaded for editing.", Alert.AlertType.ERROR);
-            return;
-        }
-
-        // Update the Task object
-        currentTask.setTitle(editTaskTitle.getText().trim());
-        currentTask.setDescription(editTaskDescription.getText().trim());
-        currentTask.setDueDate(editTaskDueDate.getValue());
-        currentTask.setPriority(editTaskPriority.getValue());
-        currentTask.setStatus(editTaskStatus.getValue());
-        currentTask.setPriorityColor(toWebColor(editGetPriorityColor.getValue()));
-
-        // --- FIXED: Call the database handler to save the changes ---
-        DatabaseHandler.updateTask(currentTask);
-        this.taskSaved = true; // Set flag to true
-
-        handleClose();
+    private void handleClose() {
+        // Get the stage from any FXML element (like the title field) and close it
+        Stage stage = (Stage) editTaskTitle.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -93,18 +82,39 @@ public class editTaskPopupWindow implements Initializable {
         handleClose();
     }
 
+    /**
+     * This is the "Save" part.
+     * It updates the database and sets the "taskSaved" flag.
+     */
     @FXML
-    private void handleClose() {
-        Stage stage = (Stage) rootPane.getScene().getWindow();
-        stage.close();
-    }
+    private void handleSaveChanges() {
+        // 1. Validation (you can add more here)
+        if (editTaskTitle.getText() == null || editTaskTitle.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Task title cannot be empty.", Alert.AlertType.ERROR);
+            return;
+        }
 
-    // Helper method to format Color object to a hex string
-    private String toWebColor(Color color) {
-        return String.format("#%02X%02X%02X",
-                (int) (color.getRed() * 255),
-                (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255));
+        if (currentTask == null) {
+            showAlert("Error", "No task loaded for editing. Cannot save.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // 2. Update the local Task object with new values
+        currentTask.setTitle(editTaskTitle.getText().trim());
+        currentTask.setDescription(editTaskDescription.getText().trim());
+        currentTask.setDueDate(editTaskDueDate.getValue());
+        currentTask.setPriority(editTaskPriority.getValue());
+        currentTask.setStatus(editTaskStatus.getValue());
+        currentTask.setPriorityColor(toWebColor(editGetPriorityColor.getValue()));
+
+        // 3. THIS IS THE DATABASE SAVE
+        DatabaseHandler.updateTask(currentTask);
+
+        // 4. THIS IS THE SIGNAL FOR THE RELOAD
+        this.taskSaved = true;
+
+        // 5. Close the popup
+        handleClose();
     }
 
     // Helper method to show alerts
@@ -116,11 +126,20 @@ public class editTaskPopupWindow implements Initializable {
         alert.showAndWait();
     }
 
-    // --- (Your ComboBox setup helper methods are good, keep them here) ---
-    private void setupPriorityComboBox() {
-        // ...
+    // Helper method to format Color object to a hex string
+    private String toWebColor(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
     }
+
+    // --- ComboBox helper methods ---
+    private void setupPriorityComboBox() {
+        // (Your existing setupPriorityComboBox method)
+    }
+
     private void setupStatusComboBox() {
-        // ...
+        // (Your existing setupStatusComboBox method)
     }
 }
