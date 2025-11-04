@@ -1,3 +1,7 @@
+/**
+ * Controller for the "Edit Task" modal dialog.
+ * Pre-fills fields, applies changes, and signals callers to refresh.
+ */
 package com.example.taskdashboardjava.controller;
 
 import com.example.taskdashboardjava.database.DatabaseHandler;
@@ -23,46 +27,41 @@ public class editTaskPopupWindow implements Initializable {
     @FXML private ColorPicker editGetPriorityColor;
     @FXML private ComboBox<TaskStatus> editTaskStatus;
     @FXML private ComboBox<String> editTaskCategory;
-
-    // This field holds the task we are editing
+    /** The task currently being edited. */
     private Task currentTask;
-
-    // This flag will tell the CardController to refresh
+    /** Flag used by callers to determine whether a reload is needed. */
     private boolean taskSaved = false;
 
     @Override
+    /**
+     * Initializes combo boxes, default colors, and category options.
+     */
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize Priority ComboBox
         editTaskPriority.getItems().setAll(TaskPriority.values());
         editTaskPriority.setPromptText("Select Priority");
-        setupPriorityComboBox(); // Call the setup method
-
-        // Initialize Status ComboBox
+        setupPriorityComboBox();
         editTaskStatus.getItems().setAll(TaskStatus.values());
         editTaskStatus.setPromptText("Select Status");
-        setupStatusComboBox(); // Call the setup method
+        setupStatusComboBox();
 
         editGetPriorityColor.setValue(Color.web("#1e5ae0"));
         loadCategories();
     }
 
+    /**
+     * Loads categories from the database and enables manual entry.
+     */
     private void loadCategories() {
-        // Get categories from the database
         List<String> categories = DatabaseHandler.getAllCategories();
-
-        // Note: We DON'T add "All" here, because you can't
-        // assign a task to the "All" filter.
-
         editTaskCategory.setItems(FXCollections.observableArrayList(categories));
-
-        // This allows you to type a new category name
         editTaskCategory.setEditable(true);
     }
-    // This method receives the task data from the card
+    /**
+     * Receives the task data and populates the form.
+     * @param task the task to edit
+     */
     public void setTask(Task task) {
-        this.currentTask = task; // Store the task object
-
-        // Pre-fill the form fields
+        this.currentTask = task;
         editTaskTitle.setText(task.getTitle());
         editTaskDescription.setText(task.getDescription());
         editTaskDueDate.setValue(task.getDueDate());
@@ -74,38 +73,37 @@ public class editTaskPopupWindow implements Initializable {
             try {
                 editGetPriorityColor.setValue(Color.web(task.getPriorityColor()));
             } catch (IllegalArgumentException e) {
-                editGetPriorityColor.setValue(Color.web("#1e5ae0")); // Fallback
+                editGetPriorityColor.setValue(Color.web("#1e5ae0"));
             }
         }
     }
-
     /**
-     * This is the "reload" part. The CardController will call this
-     * after the popup closes to see if it needs to refresh.
+     * Indicates whether the user saved changes.
+     * @return true if saved; false otherwise
      */
     public boolean isTaskSaved() {
         return taskSaved;
     }
 
     @FXML
+    /** Closes the dialog. */
     private void handleClose() {
-        // Get the stage from any FXML element (like the title field) and close it
         Stage stage = (Stage) editTaskTitle.getScene().getWindow();
         stage.close();
     }
 
     @FXML
+    /** Cancels editing and closes the dialog. */
     private void handleCancel() {
         handleClose();
     }
 
-    /**
-     * This is the "Save" part.
-     * It updates the database and sets the "taskSaved" flag.
-     */
     @FXML
+    /**
+     * Validates input, persists changes, and closes the dialog.
+     * If you read this in a code review: yes, validation could be stricter.
+     */
     private void handleSaveChanges() {
-        // 1. Validation (you can add more here)
         if (editTaskTitle.getText() == null || editTaskTitle.getText().trim().isEmpty()) {
             showAlert("Validation Error", "Task title cannot be empty.", Alert.AlertType.ERROR);
             return;
@@ -115,31 +113,20 @@ public class editTaskPopupWindow implements Initializable {
             showAlert("Error", "No task loaded for editing. Cannot save.", Alert.AlertType.ERROR);
             return;
         }
-
-        // 2. Update the local Task object with new values
         currentTask.setTitle(editTaskTitle.getText().trim());
         currentTask.setDescription(editTaskDescription.getText().trim());
         currentTask.setDueDate(editTaskDueDate.getValue());
         currentTask.setPriority(editTaskPriority.getValue());
         currentTask.setStatus(editTaskStatus.getValue());
-
-        // Get the value from the combobox (either selected or typed)
         String newCategory = editTaskCategory.getValue();
         currentTask.setCategory(newCategory);
 
         currentTask.setPriorityColor(toWebColor(editGetPriorityColor.getValue()));
-
-        // 3. THIS IS THE DATABASE SAVE
         DatabaseHandler.updateTask(currentTask);
-
-        // 4. THIS IS THE SIGNAL FOR THE RELOAD
         this.taskSaved = true;
-
-        // 5. Close the popup
         handleClose();
     }
-
-    // Helper method to show alerts
+    /** Shows a simple Alert dialog. */
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -147,21 +134,18 @@ public class editTaskPopupWindow implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    // Helper method to format Color object to a hex string
+    /** Converts a JavaFX Color to a hex web color (e.g., #RRGGBB). */
     private String toWebColor(Color color) {
         return String.format("#%02X%02X%02X",
                 (int) (color.getRed() * 255),
                 (int) (color.getGreen() * 255),
                 (int) (color.getBlue() * 255));
     }
-
-    // --- ComboBox helper methods ---
+    /** Hook for custom priority cell rendering. */
     private void setupPriorityComboBox() {
-        // (Your existing setupPriorityComboBox method)
     }
 
+    /** Hook for custom status cell rendering. */
     private void setupStatusComboBox() {
-        // (Your existing setupStatusComboBox method)
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * Module descriptor for the Task Dashboard application.
+ * Exposes core, controller, and model packages and opens them for FXML.
+ */
 module com.example.taskdashboardjava {
     requires javafx.controls;
     requires javafx.fxml;

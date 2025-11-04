@@ -1,3 +1,7 @@
+/**
+ * Controller for the "Add Task" modal dialog.
+ * Captures user input, persists to the database, and closes politely.
+ */
 package com.example.taskdashboardjava.controller;
 
 import com.example.taskdashboardjava.database.DatabaseHandler;
@@ -29,6 +33,10 @@ public class AddTaskPopupWindowsController implements Initializable {
     @FXML
     private Button cancelAddTask;
 
+    /**
+     * Handles the Create/Add action: validates, persists, and closes the dialog.
+     * @param event UI action event (because buttons love company)
+     */
     public void submitAddTask(ActionEvent event) {
         String title = addTaskTitle.getText();
         String description = addTaskDescription.getText();
@@ -45,22 +53,23 @@ public class AddTaskPopupWindowsController implements Initializable {
         this.taskAdded = true;
         Stage stage = (Stage) createAddTask.getScene().getWindow();
         stage.close();
-
-
     }
 
+    /**
+     * Closes the dialog without saving anything.
+     * @param event UI action event
+     */
     public void cancelAddTask(ActionEvent event) {
         Stage stage = (Stage) cancelAddTask.getScene().getWindow();
         stage.close();
     }
 
     @Override
+    /**
+     * Initializes the dialog controls and cell renderers.
+     */
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. Populate the ComboBox with the enum values
         addTaskPriority.getItems().setAll(TaskPriority.values());
-
-        // 2. Set the custom cell factory to display text and graphics (icons)
-        // This affects how items are displayed in the dropdown list
         addTaskPriority.setCellFactory(lv -> new ListCell<TaskPriority>() {
             @Override
             protected void updateItem(TaskPriority priority, boolean empty) {
@@ -69,20 +78,17 @@ public class AddTaskPopupWindowsController implements Initializable {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    setText(priority.getName()); // Display the name (e.g., "High")
-                    setGraphic(priority.createGraphic()); // Display the colored circle
+                    setText(priority.getName());
+                    setGraphic(priority.createGraphic());
                 }
             }
         });
-
-        // 3. Set the button cell factory
-        // This affects how the *selected item* is displayed when the ComboBox is closed
         addTaskPriority.setButtonCell(new ListCell<TaskPriority>() {
             @Override
             protected void updateItem(TaskPriority priority, boolean empty) {
                 super.updateItem(priority, empty);
                 if (empty || priority == null) {
-                    setText(addTaskPriority.getPromptText()); // Display prompt if nothing selected
+                    setText(addTaskPriority.getPromptText());
                     setGraphic(null);
                 } else {
                     setText(priority.getName());
@@ -90,17 +96,13 @@ public class AddTaskPopupWindowsController implements Initializable {
                 }
             }
         });
-
-        // Optional: Set a default selection if you don't want the prompt to persist until selection
-        // addTaskPriority.getSelectionModel().select(TaskPriority.MEDIUM);
-
-        // Add event handler for the "Add" button
-//        createAddTask.setOnAction(event -> handleAddTask());
-        // For the cancel button, you'd add:
-        // cancelButton.setOnAction(event -> handleCancel());
     }
 
     public boolean isTaskAdded() {
+        /**
+         * Indicates whether a task was successfully added.
+         * @return true if a new task was persisted; false otherwise
+         */
         return taskAdded;
     }
 }

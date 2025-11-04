@@ -1,3 +1,7 @@
+/**
+ * Domain model representing a task entity as used in the UI layer.
+ * Contains parsing helpers for mapping DB strings to enums.
+ */
 package com.example.taskdashboardjava.controller;
 
 import com.example.taskdashboardjava.model.TaskPriority;
@@ -15,96 +19,90 @@ public class Task {
     private TaskStatus status;
     private String priorityColor;
     private String category;
-
-    // This constructor is fine for creating new tasks from code
     public Task(int id, String title, String description, LocalDate dueDate, TaskPriority priority, TaskStatus status, String priorityColor) {
         this.id = id;
         this.title = title;
         this.description = description;
+            /** Database row ID. */
         this.dueDate = dueDate;
+            /** Short, human-friendly title. */
         this.priority = priority;
+            /** Optional longer description; because context matters. */
         this.status = status;
         this.priorityColor = priorityColor;
-        this.category = "All"; // Default category
+        this.category = "All";
     }
-
-    /**
-     * THIS IS THE CORRECTED CONSTRUCTOR
-     * It now correctly includes priorityColorString as a parameter.
-     */
+            /** Web color for card accent (e.g., #1e5ae0). */
     public Task(int id, String title, String description, String dueDateString, String priorityString, String category, String statusString, String priorityColorString) {
+            /** Category name used for grouping/filtering. */
         this.id = id;
         this.title = title;
+            /**
+             * Constructs a task with typed fields (typically from UI code).
+             */
         this.description = description;
         this.category = category;
-
-        // 1. Parse Due Date String into LocalDate
         try {
             if (dueDateString != null && !dueDateString.isEmpty()) {
                 this.dueDate = LocalDate.parse(dueDateString);
             }
         } catch (DateTimeParseException e) {
             System.err.println("Could not parse date: " + dueDateString);
-            this.dueDate = null; // Set to null if parsing fails
+            this.dueDate = null;
         }
-
-        // 2. Parse Priority String into TaskPriority Enum
         this.priority = findPriorityByName(priorityString);
-
-        // 3. Parse Status String into TaskStatus Enum
+            /**
+             * Constructs a task from database string fields.
+             * Handles safe parsing to enums and dates.
+             */
         this.status = findStatusByName(statusString);
-
-        // 4. Set Priority Color from database
         if (priorityColorString != null && !priorityColorString.isEmpty()) {
             this.priorityColor = priorityColorString;
         } else {
-            // If no color is in the DB, set a default
-            this.priorityColor = "#1e5ae0"; // Default blue
+            this.priorityColor = "#1e5ae0";
         }
     }
-
-    // Helper method to safely convert a String to a TaskPriority
     private TaskPriority findPriorityByName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            return TaskPriority.LOW; // Default value
+            return TaskPriority.LOW;
         }
         for (TaskPriority p : TaskPriority.values()) {
             if (p.getName().equalsIgnoreCase(name)) {
                 return p;
             }
         }
-        return TaskPriority.LOW; // Default if no match is found
+        return TaskPriority.LOW;
     }
-
-    // Helper method to safely convert a String to a TaskStatus
     private TaskStatus findStatusByName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            return TaskStatus.PENDING; // Default value
+            return TaskStatus.PENDING;
         }
+            /**
+             * Resolves a priority enum by its display name.
+             */
         for (TaskStatus s : TaskStatus.values()) {
             if (s.getName().equalsIgnoreCase(name)) {
                 return s;
             }
         }
-        return TaskStatus.PENDING; // Default if no match is found
+        return TaskStatus.PENDING;
     }
 
 
-    // --- Getters ---
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
+            /**
+             * Resolves a status enum by its display name.
+             */
     public LocalDate getDueDate() { return dueDate; }
     public TaskPriority getPriority() { return priority; }
     public TaskStatus getStatus() { return status; }
     public String getPriorityColor() { return priorityColor; }
     public String getCategory() { return category; }
-
-    // --- Setters ---
     public void setId(int id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
-    // CORRECTED: This setter no longer calls itself in a loop
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
     public void setPriority(TaskPriority priority) { this.priority = priority; }
     public void setStatus(TaskStatus status) { this.status = status; }

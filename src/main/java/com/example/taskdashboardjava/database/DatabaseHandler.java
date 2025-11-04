@@ -1,3 +1,7 @@
+/**
+ * Data access utilities for tasks. Provides insert, update, delete and queries.
+ * If this class misbehaves, blame SQL, not Java.
+ */
 package com.example.taskdashboardjava.database;
 
 import com.example.taskdashboardjava.controller.Task;
@@ -10,6 +14,13 @@ import java.util.Map;
 
 public class DatabaseHandler {
 
+    /**
+     * Inserts a new task with default category and status.
+     * @param title task title
+     * @param description task description
+     * @param due_date ISO-8601 date string (yyyy-MM-dd)
+     * @param priority display name of the priority level
+     */
     public static void InsertTask(String title, String description, String due_date, String priority){
 
         String InsertTaskSQL = """
@@ -33,8 +44,11 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Fetches all distinct category names from stored tasks.
+     * @return ordered list of categories
+     */
     public static List<String> getAllCategories() {
-        // This query gets every unique category name from your tasks
         String sql = "SELECT DISTINCT category FROM tasks WHERE category IS NOT NULL AND category != '' ORDER BY category";
         List<String> categories = new ArrayList<>();
 
@@ -51,6 +65,10 @@ public class DatabaseHandler {
         return categories;
     }
 
+    /**
+     * Updates a task to match the provided model fields.
+     * @param task task with new values
+     */
     public static void updateTask(Task task) {
         String updateTaskSQL = """
                 UPDATE tasks
@@ -72,7 +90,6 @@ public class DatabaseHandler {
             pstmt.setString(3, (task.getDueDate() != null) ? task.getDueDate().toString() : "");
             pstmt.setString(4, (task.getPriority() != null) ? task.getPriority().getName() : "Low");
 
-            // This is the important part for saving the category
             pstmt.setString(5, task.getCategory());
 
             pstmt.setString(6, (task.getStatus() != null) ? task.getStatus().getName() : "Pending");
@@ -88,8 +105,12 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Queries tasks by category; passing "All" returns every task.
+     * @param category category filter
+     * @return tasks matching the filter
+     */
     public static List<Task> getTasksByCategory(String category) {
-        // If the category is "All", we use the existing getAllTask()
         if ("All".equalsIgnoreCase(category)) {
             return getAllTask();
         }
@@ -122,6 +143,10 @@ public class DatabaseHandler {
         return tasks;
     }
 
+    /**
+     * Retrieves all tasks in the database.
+     * @return list of all tasks
+     */
     public static List<Task> getAllTask(){
 
         String GetAllTasks = """ 
@@ -158,16 +183,17 @@ public class DatabaseHandler {
         return tasks;
     }
 
+    /**
+     * Deletes the task with the given identifier.
+     * @param id primary key
+     */
     public static void deleteTask(int id) {
         String sql = "DELETE FROM tasks WHERE ID = ?";
 
         try (Connection conn = DriverManager.getConnection(DatabaseConnection.URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            // Set the ID for the WHERE clause
             pstmt.setInt(1, id);
-
-            // Execute the delete operation
             pstmt.executeUpdate();
             System.out.println("Task ID: " + id + " deleted successfully.");
 

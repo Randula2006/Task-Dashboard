@@ -1,3 +1,7 @@
+/**
+ * Thin SQLite connection utility.
+ * Ensures the data directory exists and returns a JDBC connection.
+ */
 package com.example.taskdashboardjava.database;
 
 import java.io.File;
@@ -12,10 +16,13 @@ public class DatabaseConnection{
     private static final String DB_PATH = "data/task_dashboard.db";
     public static final String URL = "jdbc:sqlite:" + DB_PATH;
 
+    /**
+     * Opens a connection to the SQLite database. Creates the data folder if needed.
+     * @return an open {@link Connection} or null if connection fails
+     */
     public static Connection connect(){
         Connection conn = null;
         try{
-            //checking if the directory is available and if not make the directory
             File DB_Dir = new File("data");
             if(!DB_Dir.exists()){
                 DB_Dir.mkdir();

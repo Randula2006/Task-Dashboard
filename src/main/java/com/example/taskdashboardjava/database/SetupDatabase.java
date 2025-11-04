@@ -1,3 +1,7 @@
+/**
+ * Database bootstrap that creates necessary tables on application startup.
+ * Safe to call multiple times.
+ */
 package com.example.taskdashboardjava.database;
 
 import java.sql.Connection;
@@ -5,6 +9,10 @@ import java.sql.Statement;
 
 public class SetupDatabase {
 
+    /**
+     * Creates the schema if it doesn't exist.
+     * Columns are intentionally simple strings for flexibility.
+     */
     public static void createTables(){
 
         String createTableTasks = """
