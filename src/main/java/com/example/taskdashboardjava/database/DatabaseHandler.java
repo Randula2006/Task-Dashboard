@@ -158,4 +158,22 @@ public class DatabaseHandler {
         return tasks;
     }
 
+    public static void deleteTask(int id) {
+        String sql = "DELETE FROM tasks WHERE ID = ?";
+
+        try (Connection conn = DriverManager.getConnection(DatabaseConnection.URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set the ID for the WHERE clause
+            pstmt.setInt(1, id);
+
+            // Execute the delete operation
+            pstmt.executeUpdate();
+            System.out.println("Task ID: " + id + " deleted successfully.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to delete task ID: " + id);
+        }
+    }
 }

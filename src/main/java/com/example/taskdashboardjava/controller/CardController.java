@@ -1,10 +1,13 @@
 package com.example.taskdashboardjava.controller;
 
+import com.example.taskdashboardjava.database.DatabaseHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -12,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 public class CardController {
     @FXML private Label taskTitle;
@@ -105,7 +109,34 @@ public class CardController {
 
     @FXML
     private void handleDeleteTask() {
-        System.out.println("Delete button clicked for task: " + currentTask.getTitle());
-        // TODO: Add delete logic here
+        if (currentTask == null) {
+            System.err.println("No task data to delete.");
+            return;
+        }
+
+        // 1. Create a confirmation alert
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Task");
+        alert.setHeaderText("Are you sure you want to delete this task?");
+        alert.setContentText("Task: " + currentTask.getTitle());
+
+        // 2. Show the alert and wait for a response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // 3. Check if the user clicked "OK"
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // 4. Delete from database
+                DatabaseHandler.deleteTask(currentTask.getId());
+
+                // 5. Refresh the entire UI
+                Controller mainController = (Controller) taskEditBtn.getScene().getRoot().getUserData();
+                mainController.refreshUI();
+
+            } catch (Exception e) {
+                System.err.println("An unexpected error occurred in handleDeleteTask:");
+                e.printStackTrace();
+            }
+        }
     }
 }
