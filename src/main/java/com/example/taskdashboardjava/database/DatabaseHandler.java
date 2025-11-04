@@ -59,7 +59,8 @@ public class DatabaseHandler {
                     due_date = ?,
                     priority = ?,
                     category = ?,
-                    status = ?
+                    status = ?,
+                    priority_color = ?
                 WHERE ID = ?;
                 """;
 
@@ -75,7 +76,8 @@ public class DatabaseHandler {
             pstmt.setString(5, task.getCategory());
 
             pstmt.setString(6, (task.getStatus() != null) ? task.getStatus().getName() : "Pending");
-            pstmt.setInt(7, task.getId());
+            pstmt.setString(7, task.getPriorityColor());
+            pstmt.setInt(8, task.getId());
 
             pstmt.executeUpdate();
             System.out.println("Task ID: " + task.getId() + " updated successfully.");
@@ -109,7 +111,8 @@ public class DatabaseHandler {
                         rs.getString("due_date"),
                         rs.getString("priority"),
                         rs.getString("category"),
-                        rs.getString("status")
+                        rs.getString("status"),
+                        rs.getString("priority_color")
                 );
                 tasks.add(task);
             }
@@ -139,7 +142,8 @@ public class DatabaseHandler {
                         rs.getString("due_date"),
                         rs.getString("priority"),
                         rs.getString("category"),
-                        rs.getString("status")
+                        rs.getString("status"),
+                        rs.getString("priority_color")
                 );
                 tasks.add(task);
             }

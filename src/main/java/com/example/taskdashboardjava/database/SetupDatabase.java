@@ -14,6 +14,7 @@ public class SetupDatabase {
                         description TEXT,
                         due_date TEXT,
                         priority TEXT,
+                        priority_color TEXT,
                         category TEXT,
                         status TEXT
                     );

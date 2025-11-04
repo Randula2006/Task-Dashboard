@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -19,6 +20,7 @@ public class CardController {
     @FXML private Label taskPriority;
     @FXML private Button taskEditBtn;
     @FXML private Button taskDeleteBtn;
+    @FXML private Pane rootPane;
 
     private Task currentTask;
 
@@ -29,6 +31,16 @@ public class CardController {
         taskDueDate.setText(task.getDueDate() != null ? task.getDueDate().toString() : "No Date");
         taskPriority.setText(task.getPriority() != null ? task.getPriority().getName() : "N/A");
         taskStatus.setText(task.getDescription() != null ? task.getDescription() : ""); // Show description
+
+        String color = task.getPriorityColor();
+
+        // Set a default if the color is null or invalid
+        if (color == null || color.isEmpty() || !color.startsWith("#")) {
+            color = "#1e5ae0"; // Default blue
+        }
+
+        // Apply the color directly to the pane's border
+        rootPane.setStyle("-fx-border-color: " + color + ";");
     }
 
     /**

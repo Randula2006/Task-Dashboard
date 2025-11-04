@@ -28,8 +28,11 @@ public class Task {
         this.category = "All"; // Default category
     }
 
-
-    public Task(int id, String title, String description, String dueDateString, String priorityString, String category, String statusString) {
+    /**
+     * THIS IS THE CORRECTED CONSTRUCTOR
+     * It now correctly includes priorityColorString as a parameter.
+     */
+    public Task(int id, String title, String description, String dueDateString, String priorityString, String category, String statusString, String priorityColorString) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -51,10 +54,11 @@ public class Task {
         // 3. Parse Status String into TaskStatus Enum
         this.status = findStatusByName(statusString);
 
-        // 4. Set a default color based on priority
-        if (this.priority != null) {
-            this.priorityColor = this.priority.getColor().toString();
+        // 4. Set Priority Color from database
+        if (priorityColorString != null && !priorityColorString.isEmpty()) {
+            this.priorityColor = priorityColorString;
         } else {
+            // If no color is in the DB, set a default
             this.priorityColor = "#1e5ae0"; // Default blue
         }
     }
